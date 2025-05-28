@@ -13,8 +13,9 @@ namespace mnm
         virtual void OnStart() {}
         virtual void OnUpdate(float deltaTime) {}
         virtual void OnRender() {}
+        virtual void OnShutdown() {}
 
     private:
-        bool m_running = true;
+        bool mRunning {true};
     };
 }

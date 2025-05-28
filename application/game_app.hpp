@@ -8,4 +8,5 @@ protected:
     void OnStart() override;
     void OnUpdate(float deltaTime) override;
     void OnRender() override;
+    void OnShutdown() override;
 };

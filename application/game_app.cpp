@@ -16,3 +16,8 @@ void GameApp::OnRender()
 {
     std::cout << "Rendering\n";
 }
+
+void GameApp::OnShutdown()
+{
+    std::cout << "Shutdown\n";
+}

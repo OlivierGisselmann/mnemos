@@ -1,6 +1,6 @@
 #include <platform/platform_linux.hpp>
 
-namespace mnm
+namespace Mnemos
 {
     MnemosWindow::MnemosWindow() {}
     MnemosWindow::~MnemosWindow() {}

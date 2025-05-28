@@ -1,13 +1,9 @@
 #include <application.hpp>
 
-#include <platform/platform_linux.hpp>
-
-#include <chrono>
-
-static mnm::MnemosWindow sWindow;
-
-namespace mnm
+namespace Mnemos
 {
+    static MnemosWindow sWindow;
+
     void Application::Run()
     {
         // TODO - Init subsystems
@@ -19,7 +15,10 @@ namespace mnm
         };
 
         if(!sWindow.Init(config))
+        {
+            Log(FATAL, "Failed to create window");
             return;
+        }
 
         OnStart();
 

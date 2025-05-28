@@ -1,23 +1,22 @@
 #include "game_app.hpp"
 
-#include <iostream>
-
 void GameApp::OnStart()
 {
-    std::cout << "Game started\n";
+    Mnemos::Log(Mnemos::TRACE, "Game started");
 }
 
 void GameApp::OnUpdate(float deltaTime)
 {
-    std::cout << "Updating, Delta time: " << deltaTime * 1e6 << '\n';
+    Mnemos::Log(Mnemos::TRACE, "Updating");
+    //std::cout << "Updating, Delta time: " << deltaTime * 1e3 << "ms\n";
 }
 
 void GameApp::OnRender()
 {
-    std::cout << "Rendering\n";
+    Mnemos::Log(Mnemos::TRACE, "Rendering");
 }
 
 void GameApp::OnShutdown()
 {
-    std::cout << "Shutdown\n";
+    Mnemos::Log(Mnemos::TRACE, "Game stopped");
 }

@@ -1,6 +1,11 @@
 #pragma once
 
-namespace mnm
+#include <platform/platform_linux.hpp>
+#include <core/logging.hpp>
+
+#include <chrono>
+
+namespace Mnemos
 {
     class Application
     {

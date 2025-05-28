@@ -2,7 +2,7 @@
 
 #include <application.hpp>
 
-class GameApp : public mnm::Application
+class GameApp : public Mnemos::Application
 {
 protected:
     void OnStart() override;

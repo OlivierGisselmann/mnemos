@@ -1,0 +1,11 @@
+#pragma once
+
+#include <application.hpp>
+
+class GameApp : public mnm::Application
+{
+protected:
+    void OnStart() override;
+    void OnUpdate(float deltaTime) override;
+    void OnRender() override;
+};

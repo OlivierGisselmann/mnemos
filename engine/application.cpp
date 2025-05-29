@@ -14,10 +14,11 @@ namespace Mnemos
             "Mnemos Engine"
         };
 
+        // Create window and don't loop if failed
         if(!sWindow.Init(config))
         {
             Log(FATAL, "Failed to create window");
-            return;
+            mRunning = false;
         }
 
         OnStart();

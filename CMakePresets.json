@@ -1,0 +1,116 @@
+{
+    "version": 8,
+    "$schema": "https://cmake.org/cmake/help/latest/_downloads/3e2d73bff478d88a7de0de736ba5e361/schema.json",
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 25,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "binaryDir": "${sourceDir}/out/${presetName}",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "debug",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "release",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "windows",
+            "hidden": true,
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "debug-ninja",
+            "displayName": "Debug Ninja",
+            "generator": "Ninja",
+            "inherits": [
+                "base",
+                "debug"
+            ]
+        },
+        {
+            "name": "release-ninja",
+            "displayName": "Release Ninja",
+            "generator": "Ninja",
+            "inherits": [
+                "base",
+                "release"
+            ]
+        },
+        {
+            "name": "debug-msvc",
+            "displayName": "Debug MSVC",
+            "generator": "Visual Studio 17 2022",
+            "inherits": [
+                "base",
+                "windows",
+                "debug"
+            ]
+        },
+        {
+            "name": "release-msvc",
+            "displayName": "Release MSVC",
+            "generator": "Visual Studio 17 2022",
+            "inherits": [
+                "base",
+                "windows",
+                "release"
+            ]
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "app-debug-ninja",
+            "displayName": "App Debug Ninja Build",
+            "configurePreset": "debug-ninja",
+            "configuration": "Debug"
+        },
+        {
+            "name": "app-release-ninja",
+            "displayName": "App Release Ninja Build",
+            "configurePreset": "release-ninja",
+            "configuration": "Release"
+        },
+        {
+            "name": "app-debug-msvc",
+            "displayName": "App Debug MSVC Build",
+            "configurePreset": "debug-msvc",
+            "configuration": "Debug",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "app-release-msvc",
+            "displayName": "App Release MSVC Build",
+            "configurePreset": "release-msvc",
+            "configuration": "Release",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        }
+    ]
+}

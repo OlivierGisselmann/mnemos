@@ -1,0 +1,27 @@
+name: CMake Single Platform
+
+on:
+  push:
+    branches:  ["main" ]
+  pull_request:
+    branches:  ["main" ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: [self-hosted, linux]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure CMake
+      run: cmake --preset release-ninja -DBUILD_TESTS=ON
+
+    - name: Build
+      run: cmake --build --preset app-release-ninja
+
+    -name: Test
+      working-directory: ${{github.workspace}}/out/release-ninja/tests
+      run: ctest -C ${{env.BUILD_TYPE}}

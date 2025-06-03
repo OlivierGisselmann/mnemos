@@ -1,7 +1,8 @@
 #pragma once
 
-#include <platform/platform_linux.hpp>
 #include <core/logging.hpp>
+#include <platform/platform.hpp>
+#include <platform/window/iwindow.hpp>
 
 #include <chrono>
 
@@ -22,5 +23,7 @@ namespace Mnemos
 
     private:
         bool mRunning {true};
+
+        IWindow* mWindow {nullptr};
     };
 }

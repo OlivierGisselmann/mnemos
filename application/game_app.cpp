@@ -7,13 +7,12 @@ void GameApp::OnStart()
 
 void GameApp::OnUpdate(float deltaTime)
 {
-    Mnemos::Log(Mnemos::TRACE, "Updating");
-    //std::cout << "Updating, Delta time: " << deltaTime * 1e3 << "ms\n";
+    //Mnemos::Log(Mnemos::TRACE, "Updating");
 }
 
 void GameApp::OnRender()
 {
-    Mnemos::Log(Mnemos::TRACE, "Rendering");
+    //Mnemos::Log(Mnemos::TRACE, "Rendering");
 }
 
 void GameApp::OnShutdown()

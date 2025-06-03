@@ -1,12 +1,16 @@
-#include <platform/platform_linux.hpp>
+#include <platform/platform.hpp>
+#if defined(MNEMOS_PLATFORM_LINUX)
+
+#include <platform/window/window_linux.hpp>
+#include <core/logging.hpp>
 
 namespace Mnemos
 {
-    MnemosWindow::MnemosWindow() {}
-    MnemosWindow::~MnemosWindow() {}
-
-    bool MnemosWindow::Init(const WindowConfig& conf)
+    bool LinuxWindow::Init(const SubsystemInitInfo& info)
     {
+        // Get the window configuration from init info
+        const auto* windowConfig = dynamic_cast<const WindowInitInfo*>(&info);
+
         // Get XLib display
         mDisplay = XOpenDisplay(nullptr);
         if(nullptr == mDisplay)
@@ -26,7 +30,7 @@ namespace Mnemos
         // Create window
         mWindow = XCreateWindow(
             mDisplay, RootWindow(mDisplay, mScreenId),
-            0, 0, conf.width, conf.height, 0,
+            0, 0, windowConfig->width, windowConfig->height, 0,
             CopyFromParent, InputOutput, CopyFromParent,
             CWBackPixel | CWColormap | CWBorderPixel | CWEventMask,
             &mAttributes
@@ -34,23 +38,42 @@ namespace Mnemos
         
         // Check for window creation error
         if(BadAlloc == mWindow)
+        {
+            Log(FATAL, "Unable to create the X11 window");
             return false;
+        }
 
         // Redirect close event
         mDeleteWindow = XInternAtom(mDisplay, "WM_DELETE_WINDOW", False);
         XSetWMProtocols(mDisplay, mWindow, &mDeleteWindow, 1);
 
         // Set window title
-        XStoreName(mDisplay, mWindow, conf.title);
+        XStoreName(mDisplay, mWindow, windowConfig->title);
 
         // Clear window and show it
         XClearWindow(mDisplay, mWindow);
         XMapRaised(mDisplay, mWindow);
 
+        Log(TRACE, "X11 Window initialization");
+
         return true;
     }
 
-    void MnemosWindow::Update()
+    void LinuxWindow::Shutdown()
+    {
+        Log(TRACE, "X11 Window shutdown");
+
+        // Free memory and close connection to XLib server
+        XDestroyWindow(mDisplay, mWindow);
+        XCloseDisplay(mDisplay);
+    }
+
+    void LinuxWindow::Update()
+    {
+        
+    }
+
+    void LinuxWindow::PollEvents()
     {
         // Poll events
         if(XPending(mDisplay) > 0)
@@ -65,15 +88,15 @@ namespace Mnemos
         }
     }
 
-    void MnemosWindow::Shutdown()
+    void LinuxWindow::SwapBuffers()
     {
-        // Free memory and close connection to XLib server
-        XDestroyWindow(mDisplay, mWindow);
-        XCloseDisplay(mDisplay);
+
     }
 
-    bool MnemosWindow::ShoudClose() const
+    bool LinuxWindow::CloseRequested() const
     {
         return mShouldClose;
     }
 }
+
+#endif

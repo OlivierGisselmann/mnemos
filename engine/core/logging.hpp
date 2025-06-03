@@ -9,7 +9,7 @@ namespace Mnemos
         TRACE,
         DEBUG,
         WARN,
-        ERROR,
+        ERR,
         FATAL
     };
 
@@ -20,7 +20,7 @@ namespace Mnemos
             case TRACE: std::cout << "[TRACE] " << msg << '\n'; break;
             case DEBUG: std::cout << "[DEBUG] " << msg << '\n'; break;
             case WARN: std::cout << "[WARN] " << msg << '\n'; break;
-            case ERROR: std::cout << "[ERROR] " << msg << '\n'; break;
+            case ERR: std::cout << "[ERROR] " << msg << '\n'; break;
             case FATAL: std::cout << "[FATAL] " << msg << '\n'; break;
         }
     }

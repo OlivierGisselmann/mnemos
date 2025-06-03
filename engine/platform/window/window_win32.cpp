@@ -4,7 +4,6 @@
 #include <platform/window/window_win32.hpp>
 #include <core/logging.hpp>
 
-
 namespace Mnemos
 {
     bool Win32Window::Init(const SubsystemInitInfo& info)
@@ -46,10 +45,6 @@ namespace Mnemos
     void Win32Window::Shutdown()
     {
         Log(TRACE, "Win32 Window shutdown");
-
-        // Free memory and close connection to XLib server
-        XDestroyWindow(mDisplay, mWindow);
-        XCloseDisplay(mDisplay);
     }
 
     void Win32Window::Update()
@@ -105,15 +100,13 @@ namespace Mnemos
                     return 0;
             case WM_DESTROY:
                 PostQuitMessage(0);
-                mRunning = false;
+                mShouldClose = true;
                 return 0;
             case WM_KEYDOWN:
             case WM_SYSKEYDOWN:
-                Input::OnKeyChange((int)wParam, true);
                 break;
             case WM_KEYUP:
             case WM_SYSKEYUP:
-                Input::OnKeyChange((int)wParam, false);
                 break;
         }
 

@@ -1,5 +1,6 @@
 #include <application.hpp>
 
+// Global Static Instances
 #if defined(MNEMOS_PLATFORM_LINUX)
     #include <platform/window/window_linux.hpp>
     static Mnemos::LinuxWindow sWindow;
@@ -8,38 +9,25 @@
     static Mnemos::Win32Window sWindow;
 #endif
 
+static Mnemos::FrameTimer sTimer;
+
 namespace Mnemos
 {
     void Application::Run()
     {
-        // Get reference to platform window with polymorphism
-        mWindow = &sWindow;
-
-        // Window configuration
-        WindowInitInfo windowConfig;
-        windowConfig.width = 800;
-        windowConfig.height = 600;
-        windowConfig.title = "Yahoooo";
-        windowConfig.fullscreen = false;
-
-        // Window subsystem initialization
-        mWindow->Init(windowConfig);
+        if(!InitSubsystems())
+            return;
 
         OnStart();
 
-        // TODO - Remove timer from here and put inside subsystem
-        auto last = std::chrono::high_resolution_clock::now();
-
         while(mRunning)
         {
-            auto now = std::chrono::high_resolution_clock::now();
-            float delta = std::chrono::duration<float>(now - last).count();
-            last = now;
+            mTimer->Tick();
 
             // TODO - Check for window close & engine stop events
             mWindow->PollEvents();
             mWindow->Update();
-            OnUpdate(delta);
+            OnUpdate(mTimer->GetDeltaTime());
 
             // TODO - Render loop
             mWindow->SwapBuffers();
@@ -47,10 +35,48 @@ namespace Mnemos
 
             if(mWindow->CloseRequested())
                 mRunning = false;
+
+            mTimer->Sleep();
         }
 
         // TODO - Shutdown subsystems & cleanup
         OnShutdown();
+        ShutdownSubsystems();
+    }
+
+    // TODO - Implement priority queue for instances init
+    bool Application::InitSubsystems()
+    {
+        // Timer initialization
+        mTimer = &sTimer;
+        FrameTimerInitInfo timerConfig;
+        timerConfig.targetFramerate = 24;
+        timerConfig.limitFramerate = true;
+        if(!mTimer->Init(timerConfig))
+        {
+            Log(FATAL, "Failed to initialize timer");
+            return false;
+        }
+
+        // Window initialization
+        mWindow = &sWindow;
+        WindowInitInfo windowConfig;
+        windowConfig.width = 1280;
+        windowConfig.height = 720;
+        windowConfig.title = "Youpiii";
+        windowConfig.fullscreen = false;
+        if(!mWindow->Init(windowConfig))
+        {
+            Log(FATAL, "Failed to initialize window");
+            return false;
+        }
+
+        return true;
+    }
+
+    void Application::ShutdownSubsystems()
+    {
         mWindow->Shutdown();
+        mTimer->Shutdown();
     }
 }

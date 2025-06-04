@@ -3,8 +3,7 @@
 #include <core/logging.hpp>
 #include <platform/platform.hpp>
 #include <platform/window/iwindow.hpp>
-
-#include <chrono>
+#include <core/time/frame_timer.hpp>
 
 namespace Mnemos
 {
@@ -22,8 +21,13 @@ namespace Mnemos
         virtual void OnShutdown() {}
 
     private:
+        bool InitSubsystems();
+        void ShutdownSubsystems();
+
+    private:
         bool mRunning {true};
 
         IWindow* mWindow {nullptr};
+        FrameTimer* mTimer {nullptr};
     };
 }

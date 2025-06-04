@@ -38,10 +38,7 @@ namespace Mnemos
         
         // Check for window creation error
         if(BadAlloc == mWindow)
-        {
-            Log(FATAL, "Unable to create the X11 window");
             return false;
-        }
 
         // Redirect close event
         mDeleteWindow = XInternAtom(mDisplay, "WM_DELETE_WINDOW", False);

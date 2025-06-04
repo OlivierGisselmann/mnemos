@@ -30,10 +30,7 @@ namespace Mnemos
         );
 
         if(!mHwnd)
-        {
-            Log(FATAL, "Unable to create the Win32 window");
             return false;
-        }
 
         ShowWindow(mHwnd, SW_SHOWDEFAULT);
 
@@ -94,7 +91,7 @@ namespace Mnemos
         switch(uMsg)
         {
             case WM_CLOSE:
-                if(MessageBox(hwnd, "Quit?", "CloverEngine", MB_OKCANCEL) == IDOK)
+                if(MessageBox(hwnd, "Quit?", "Mnemos Engine", MB_OKCANCEL) == IDOK)
                     DestroyWindow(hwnd);
                 else
                     return 0;

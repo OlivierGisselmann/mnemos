@@ -50,7 +50,7 @@ namespace Mnemos
         // Timer initialization
         mTimer = &sTimer;
         FrameTimerInitInfo timerConfig;
-        timerConfig.targetFramerate = 24;
+        timerConfig.targetFramerate = 60;
         timerConfig.limitFramerate = true;
         if(!mTimer->Init(timerConfig))
         {

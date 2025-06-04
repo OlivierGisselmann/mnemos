@@ -7,7 +7,10 @@
 #include <platform/types.hpp>
 
 #define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#include <Windows.h>
+// Needed for clock resolution
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 
 namespace Mnemos
 {

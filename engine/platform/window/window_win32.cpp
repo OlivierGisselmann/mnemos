@@ -8,6 +8,13 @@ namespace Mnemos
 {
     bool Win32Window::Init(const SubsystemInitInfo& info)
     {
+        if (timeBeginPeriod(1) == TIMERR_NOERROR) {
+            std::cout << "High-res timer enabled (1ms).\n";
+        }
+        else {
+            std::cerr << "Failed to set timer resolution.\n";
+        }
+
         // Get the window configuration from init info
         const auto* windowConfig = dynamic_cast<const WindowInitInfo*>(&info);
 
@@ -41,6 +48,8 @@ namespace Mnemos
 
     void Win32Window::Shutdown()
     {
+        timeEndPeriod(1);
+
         Log(TRACE, "Win32 Window shutdown");
     }
 
@@ -52,7 +61,7 @@ namespace Mnemos
     void Win32Window::PollEvents()
     {
         // Loop through all events
-        while(GetMessage(&mMsg, nullptr, 0, 0))
+        while (PeekMessage(&mMsg, nullptr, 0, 0, PM_REMOVE))
         {
             TranslateMessage(&mMsg);
             DispatchMessage(&mMsg);
@@ -71,27 +80,34 @@ namespace Mnemos
 
     LRESULT CALLBACK Win32Window::MessageRouter(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
-        Win32Window* app;
+        Win32Window* pThis;
 
-        // Get instance of window to reroute message
-        if (uMsg == WM_CREATE)
+        // Get a reference to the Win32Window instance via window's user set pointer
+        if (uMsg == WM_NCCREATE)
         {
-            app = (Win32Window*)(((LPCREATESTRUCT)lParam)->lpCreateParams);
-            SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)app);
+            LPCREATESTRUCT lpcs = reinterpret_cast<LPCREATESTRUCT>(lParam);
+            pThis = static_cast<Win32Window*>(lpcs->lpCreateParams);
+            SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pThis));
         }
         else
-            app = (Win32Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+        {
+            pThis = reinterpret_cast<Win32Window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+        }
 
-        // Route events to window's method
-        return app->WindowProc(hwnd, uMsg, wParam, lParam);
+        // If it exists, send messages to its method
+        if (pThis)
+            return pThis->WindowProc(hwnd, uMsg, wParam, lParam);
+
+        // Default return
+        return DefWindowProc(hwnd, uMsg, wParam, lParam);
     }
 
     LRESULT CALLBACK Win32Window::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
-        switch(uMsg)
+        switch (uMsg)
         {
             case WM_CLOSE:
-                if(MessageBox(hwnd, "Quit?", "Mnemos Engine", MB_OKCANCEL) == IDOK)
+                if(MessageBox(hwnd, "Quit application?", "Mnemos Engine", MB_OKCANCEL) == IDOK)
                     DestroyWindow(hwnd);
                 else
                     return 0;
@@ -99,12 +115,6 @@ namespace Mnemos
                 PostQuitMessage(0);
                 mShouldClose = true;
                 return 0;
-            case WM_KEYDOWN:
-            case WM_SYSKEYDOWN:
-                break;
-            case WM_KEYUP:
-            case WM_SYSKEYUP:
-                break;
         }
 
         return DefWindowProc(hwnd, uMsg, wParam, lParam);

@@ -10,6 +10,8 @@ if(UNIX)
     # Link XLib to the library
     find_package(X11 REQUIRED)
     target_link_libraries(${PROJECT_NAME} PUBLIC ${X11_LIBRARIES})
+elseif(WIN32)
+    target_link_libraries(${PROJECT_NAME} PUBLIC winmm.lib)
 endif()
 
 # Include headers publicly

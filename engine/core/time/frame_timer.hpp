@@ -17,7 +17,7 @@ namespace Mnemos
         void Shutdown() override;
 
         void Tick() override;
-        void Sleep();
+        void Sleep() override;
 
         f64 GetDeltaTime() const override;
 

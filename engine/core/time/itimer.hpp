@@ -14,6 +14,7 @@ namespace Mnemos
         void Shutdown() override = 0;
 
         virtual void Tick() = 0;
+        virtual void Sleep() = 0;
         virtual f64 GetDeltaTime() const = 0;
     };
 }

@@ -9,7 +9,8 @@ namespace Mnemos
     {
         // Get the window configuration from init info
         const auto* windowConfig = dynamic_cast<const WindowInitInfo*>(&info);
-
+        mWidth = windowConfig->width;
+        mHeight = windowConfig->height;
         mLogger = windowConfig->logger;
 
         // Enable high res timer
@@ -115,6 +116,16 @@ namespace Mnemos
         }
 
         return DefWindowProc(hwnd, uMsg, wParam, lParam);
+    }
+
+    i16 Win32Window::GetWidth() const
+    {
+        return mWidth;
+    }
+
+    i16 Win32Window::GetHeight() const
+    {
+        return mHeight;
     }
 }
 

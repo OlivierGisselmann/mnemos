@@ -9,7 +9,8 @@ namespace Mnemos
     {
         // Get the window configuration from init info
         const auto* windowConfig = dynamic_cast<const WindowInitInfo*>(&info);
-
+        mWidth = windowConfig->width;
+        mHeight = windowConfig->height;
         mLogger = windowConfig->logger;
 
         // Get XLib display
@@ -94,6 +95,16 @@ namespace Mnemos
     bool LinuxWindow::CloseRequested() const
     {
         return mShouldClose;
+    }
+
+    i16 LinuxWindow::GetWidth() const
+    {
+        return mWidth;
+    }
+
+    i16 LinuxWindow::GetHeight() const
+    {
+        return mHeight;
     }
 }
 

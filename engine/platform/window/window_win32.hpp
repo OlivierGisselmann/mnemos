@@ -24,6 +24,9 @@ namespace Mnemos
         void SwapBuffers() override;
         bool CloseRequested() const override;
 
+        i16 GetWidth() const override;
+        i16 GetHeight() const override;
+
     private:
         static LRESULT CALLBACK MessageRouter(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
         LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

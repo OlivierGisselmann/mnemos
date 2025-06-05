@@ -22,6 +22,9 @@ namespace Mnemos
         void SwapBuffers() override;
         bool CloseRequested() const override;
 
+        i16 GetWidth() const override;
+        i16 GetHeight() const override;
+
     private:
         Display* mDisplay;
         Screen* mScreen;

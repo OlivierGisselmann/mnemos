@@ -12,9 +12,6 @@ namespace Mnemos
         mWidth = windowConfig->width;
         mHeight = windowConfig->height;
         mLogger = windowConfig->logger;
-
-        // Enable high res timer
-        timeBeginPeriod(1);
         
         mHInstance = GetModuleHandle(nullptr);
 
@@ -46,8 +43,6 @@ namespace Mnemos
 
     void Win32Window::Shutdown()
     {
-        timeEndPeriod(1);
-
         mLogger->Log(LogLevel::TRACE, "Win32 Window shutdown");
     }
 

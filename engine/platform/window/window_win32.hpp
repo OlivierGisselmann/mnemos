@@ -8,8 +8,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
-// Needed for clock resolution
-#include <mmsystem.h>
+
 
 namespace Mnemos
 {

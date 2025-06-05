@@ -2,6 +2,16 @@
 
 #include <thread>
 
+#include <platform/platform.hpp>
+#if defined(MNEMOS_PLATFORM_WIN32)
+
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+// Needed for clock resolution
+#include <mmsystem.h>
+
+#endif
+
 namespace Mnemos
 {
     // For readability purposes
@@ -9,6 +19,11 @@ namespace Mnemos
 
     bool FrameTimer::Init(const SubsystemInitInfo& info)
     {
+        // Enable High Res timer if on Windows
+        #if defined(MNEMOS_PLATFORM_WIN32)
+            timeBeginPeriod(1);
+        #endif
+
         // Get init info
         const auto* timerInfo = dynamic_cast<const FrameTimerInitInfo*>(&info);
         mTargetFrameTime = 1.0 / timerInfo->targetFramerate;
@@ -25,6 +40,10 @@ namespace Mnemos
 
     void FrameTimer::Shutdown()
     {
+        #if defined(MNEMOS_PLATFORM_WIN32)
+            timeEndPeriod(1);
+        #endif
+
         mLogger->Log(LogLevel::TRACE, "Frame Timer shutdown");
     }
 

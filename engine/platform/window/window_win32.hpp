@@ -35,7 +35,7 @@ namespace Mnemos
         HWND mHwnd;
         MSG mMsg;
 
-        bool mShouldClose;
+        bool mShouldClose = false;
         ILogger* mLogger = nullptr;
     };
 }

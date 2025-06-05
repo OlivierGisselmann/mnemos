@@ -31,7 +31,7 @@ namespace Mnemos
         i8 mScreenId;
         Window mWindow;
         XSetWindowAttributes mAttributes{};
-        bool mShouldClose;
+        bool mShouldClose = false;
 
         XEvent mEvent;
         Atom mDeleteWindow;

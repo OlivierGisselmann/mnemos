@@ -20,7 +20,7 @@ TEST(WindowTest, CreateWindowWithCorrectSize)
 
     #if defined(MNEMOS_PLATFORM_LINUX)
         Mnemos::LinuxWindow window;
-    #elif defined(MNEMOS_PLATFORM_WINDOWS)
+    #elif defined(MNEMOS_PLATFORM_WIN32)
         Mnemos::Win32Window window;
     #endif
 
@@ -46,7 +46,7 @@ TEST(WindowTest, ShouldCloseDefaultsToFalse)
 
     #if defined(MNEMOS_PLATFORM_LINUX)
         Mnemos::LinuxWindow window;
-    #elif defined(MNEMOS_PLATFORM_WINDOWS)
+    #elif defined(MNEMOS_PLATFORM_WIN32)
         Mnemos::Win32Window window;
     #endif
 
@@ -71,7 +71,7 @@ TEST(WindowTest, CanPollEventsWithoutCrash)
 
     #if defined(MNEMOS_PLATFORM_LINUX)
         Mnemos::LinuxWindow window;
-    #elif defined(MNEMOS_PLATFORM_WINDOWS)
+    #elif defined(MNEMOS_PLATFORM_WIN32)
         Mnemos::Win32Window window;
     #endif
 

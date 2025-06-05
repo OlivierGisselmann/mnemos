@@ -10,7 +10,6 @@
 #include <Windows.h>
 // Needed for clock resolution
 #include <mmsystem.h>
-#pragma comment(lib, "winmm.lib")
 
 namespace Mnemos
 {

@@ -2,7 +2,6 @@
 #if defined(MNEMOS_PLATFORM_WIN32)
 
 #include <platform/window/window_win32.hpp>
-#include <core/logging.hpp>
 
 namespace Mnemos
 {

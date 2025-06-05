@@ -2,7 +2,7 @@
 
 void GameApp::OnStart()
 {
-    Mnemos::Log(Mnemos::TRACE, "Game started");
+    //Mnemos::Log(Mnemos::TRACE, "Game started");
 }
 
 void GameApp::OnUpdate(float deltaTime)
@@ -17,5 +17,5 @@ void GameApp::OnRender()
 
 void GameApp::OnShutdown()
 {
-    Mnemos::Log(Mnemos::TRACE, "Game stopped");
+    //Mnemos::Log(Mnemos::TRACE, "Game stopped");
 }

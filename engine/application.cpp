@@ -9,6 +9,7 @@
     static Mnemos::Win32Window sWindow;
 #endif
 
+static Mnemos::ConsoleLogger sLogger;
 static Mnemos::FrameTimer sTimer;
 
 namespace Mnemos
@@ -22,21 +23,21 @@ namespace Mnemos
 
         while(mRunning)
         {
-            mTimer->Tick();
+            mContext.timer->Tick();
 
             // TODO - Check for window close & engine stop events
-            mWindow->PollEvents();
-            mWindow->Update();
-            OnUpdate(mTimer->GetDeltaTime());
+            mContext.window->PollEvents();
+            mContext.window->Update();
+            OnUpdate(mContext.timer->GetDeltaTime());
 
             // TODO - Render loop
-            mWindow->SwapBuffers();
+            mContext.window->SwapBuffers();
             OnRender();
 
-            if(mWindow->CloseRequested())
+            if(mContext.window->CloseRequested())
                 mRunning = false;
 
-            mTimer->Sleep();
+            mContext.timer->Sleep();
         }
 
         // TODO - Shutdown subsystems & cleanup
@@ -47,27 +48,36 @@ namespace Mnemos
     // TODO - Implement priority queue for instances init
     bool Application::InitSubsystems()
     {
+        // Logger initialization
+        mContext.logger = &sLogger;
+        if(!mContext.logger->Init({}))
+        {
+            return false;
+        }
+
         // Timer initialization
-        mTimer = &sTimer;
+        mContext.timer = &sTimer;
         FrameTimerInitInfo timerConfig;
         timerConfig.targetFramerate = 60;
         timerConfig.limitFramerate = true;
-        if(!mTimer->Init(timerConfig))
+        timerConfig.logger = mContext.logger;
+        if(!mContext.timer->Init(timerConfig))
         {
-            Log(FATAL, "Failed to initialize timer");
+            mContext.logger->Log(LogLevel::FATAL, "Failed to initialize timer");
             return false;
         }
 
         // Window initialization
-        mWindow = &sWindow;
+        mContext.window = &sWindow;
         WindowInitInfo windowConfig;
         windowConfig.width = 1280;
         windowConfig.height = 720;
         windowConfig.title = "Youpiii";
         windowConfig.fullscreen = false;
-        if(!mWindow->Init(windowConfig))
+        windowConfig.logger = mContext.logger;
+        if(!mContext.window->Init(windowConfig))
         {
-            Log(FATAL, "Failed to initialize window");
+            mContext.logger->Log(LogLevel::FATAL, "Failed to initialize window");
             return false;
         }
 
@@ -76,7 +86,8 @@ namespace Mnemos
 
     void Application::ShutdownSubsystems()
     {
-        mWindow->Shutdown();
-        mTimer->Shutdown();
+        mContext.window->Shutdown();
+        mContext.timer->Shutdown();
+        mContext.logger->Shutdown();
     }
 }

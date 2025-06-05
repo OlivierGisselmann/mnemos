@@ -8,16 +8,14 @@ namespace Mnemos
 {
     bool Win32Window::Init(const SubsystemInitInfo& info)
     {
-        if (timeBeginPeriod(1) == TIMERR_NOERROR) {
-            std::cout << "High-res timer enabled (1ms).\n";
-        }
-        else {
-            std::cerr << "Failed to set timer resolution.\n";
-        }
-
         // Get the window configuration from init info
         const auto* windowConfig = dynamic_cast<const WindowInitInfo*>(&info);
 
+        mLogger = windowConfig->logger;
+
+        // Enable high res timer
+        timeBeginPeriod(1);
+        
         mHInstance = GetModuleHandle(nullptr);
 
         const char* CLASS_NAME = "MainWindowClass";
@@ -41,7 +39,7 @@ namespace Mnemos
 
         ShowWindow(mHwnd, SW_SHOWDEFAULT);
 
-        Log(TRACE, "Win32 Window initialization");
+        mLogger->Log(LogLevel::TRACE, "Win32 Window initialization");
 
         return true;
     }
@@ -50,7 +48,7 @@ namespace Mnemos
     {
         timeEndPeriod(1);
 
-        Log(TRACE, "Win32 Window shutdown");
+        mLogger->Log(LogLevel::TRACE, "Win32 Window shutdown");
     }
 
     void Win32Window::Update()

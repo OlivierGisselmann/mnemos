@@ -32,6 +32,8 @@ namespace Mnemos
 
         XEvent mEvent;
         Atom mDeleteWindow;
+
+        ILogger* mLogger = nullptr;
     };
 }
 

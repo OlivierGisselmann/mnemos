@@ -2,7 +2,6 @@
 #if defined(MNEMOS_PLATFORM_LINUX)
 
 #include <platform/window/window_linux.hpp>
-#include <core/logging.hpp>
 
 namespace Mnemos
 {
@@ -10,6 +9,8 @@ namespace Mnemos
     {
         // Get the window configuration from init info
         const auto* windowConfig = dynamic_cast<const WindowInitInfo*>(&info);
+
+        mLogger = windowConfig->logger;
 
         // Get XLib display
         mDisplay = XOpenDisplay(nullptr);
@@ -51,14 +52,14 @@ namespace Mnemos
         XClearWindow(mDisplay, mWindow);
         XMapRaised(mDisplay, mWindow);
 
-        Log(TRACE, "X11 Window initialization");
+        mLogger->Log(LogLevel::TRACE, "X11 Window initialization");
 
         return true;
     }
 
     void LinuxWindow::Shutdown()
     {
-        Log(TRACE, "X11 Window shutdown");
+        mLogger->Log(LogLevel::TRACE, "X11 Window shutdown");
 
         // Free memory and close connection to XLib server
         XDestroyWindow(mDisplay, mWindow);

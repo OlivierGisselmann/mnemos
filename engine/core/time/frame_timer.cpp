@@ -1,5 +1,4 @@
 #include <core/time/frame_timer.hpp>
-#include <core/logging.hpp>
 
 #include <thread>
 
@@ -14,18 +13,19 @@ namespace Mnemos
         const auto* timerInfo = dynamic_cast<const FrameTimerInitInfo*>(&info);
         mTargetFrameTime = 1.0 / timerInfo->targetFramerate;
         mLimitFramerate = timerInfo->limitFramerate;
+        mLogger = timerInfo->logger;
 
         // Initialize first time point
         mLast = Clock::now();
 
-        Log(TRACE, "Frame Timer initialized");
+        mLogger->Log(LogLevel::TRACE, "Frame Timer initialized");
 
         return true;
     }
 
     void FrameTimer::Shutdown()
     {
-        Log(TRACE, "Frame Timer shutdown");
+        mLogger->Log(LogLevel::TRACE, "Frame Timer shutdown");
     }
 
     void FrameTimer::Tick()
@@ -74,8 +74,6 @@ namespace Mnemos
 
         mDeltaTime = frameDuration;
         mLast = frameEnd;
-
-        std::cout << mDeltaTime * 1e3 << " ms | " << (1.0 / (mDeltaTime)) << " FPS\n";
     }
 
     f64 FrameTimer::GetDeltaTime() const

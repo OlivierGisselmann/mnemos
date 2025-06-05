@@ -1,16 +1,18 @@
 #pragma once
 
 #include <core/isubsystem.hpp>
+#include <core/logging/ilogger.hpp>
 #include <platform/types.hpp>
 
 namespace Mnemos
 {
     struct WindowInitInfo : SubsystemInitInfo
     {
-        i16 width;
-        i16 height;
-        const char* title;
+        i16 width = 0;
+        i16 height = 0;
+        const char* title = nullptr;
         bool fullscreen = false;
+        ILogger* logger = nullptr;
     };
 
     class IWindow : public ISubsystem

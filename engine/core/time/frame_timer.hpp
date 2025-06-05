@@ -1,13 +1,15 @@
 #pragma once
 
 #include <core/time/itimer.hpp>
+#include <core/logging/ilogger.hpp>
 
 namespace Mnemos
 {
     struct FrameTimerInitInfo : public SubsystemInitInfo
     {
-        i16 targetFramerate;
-        bool limitFramerate;
+        i16 targetFramerate = 0;
+        bool limitFramerate = false;
+        ILogger* logger = nullptr;
     };
 
     class FrameTimer : public ITimer
@@ -27,6 +29,8 @@ namespace Mnemos
 
         f64 mDeltaTime = 0;
         f64 mTargetFrameTime = 0;
-        bool mLimitFramerate;
+        bool mLimitFramerate = false;
+
+        ILogger* mLogger = nullptr;
     };
 }

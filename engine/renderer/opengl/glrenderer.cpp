@@ -35,6 +35,6 @@ namespace Mnemos
 
     void GLRenderer::EndFrame()
     {
-        mWindow->SwapBuffers();
+        mWindow->SwapWindowBuffers();
     }
 }

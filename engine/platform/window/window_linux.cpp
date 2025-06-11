@@ -115,7 +115,11 @@ namespace Mnemos
         glXMakeCurrent(mDisplay, mWindow, mContext);
 
         // Load GL Functions with GLAD
-        gladLoadGLLoader((GLADloadproc)glXGetProcAddress);
+        if (!gladLoadGLLoader((GLADloadproc)wglGetProcAddress))
+        {
+            mLogger->Log(LogLevel::ERR, "Failed to load OpenGL functions");
+            return false;
+        }
 
         mLogger->Log(LogLevel::TRACE, "X11 Window initialized");
 
@@ -155,7 +159,7 @@ namespace Mnemos
         }
     }
 
-    void LinuxWindow::SwapBuffers()
+    void LinuxWindow::SwapWindowBuffers()
     {
         glXSwapBuffers(mDisplay, mWindow);
     }

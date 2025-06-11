@@ -74,7 +74,7 @@ namespace Mnemos
         WindowInitInfo windowConfig;
         windowConfig.width = 1280;
         windowConfig.height = 720;
-        windowConfig.title = "Youpiii";
+        windowConfig.title = "eskesamarch?";
         windowConfig.fullscreen = false;
         windowConfig.logger = mContext.logger;
         if(!mContext.window->Init(windowConfig))

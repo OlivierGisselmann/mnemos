@@ -9,6 +9,8 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
+#include <glad/glad.h>
+#include <gl/GL.h>
 
 namespace Mnemos
 {
@@ -20,7 +22,7 @@ namespace Mnemos
 
         void PollEvents() override;
         void Update() override;
-        void SwapBuffers() override;
+        void SwapWindowBuffers() override;
         bool CloseRequested() const override;
 
         i16 GetWidth() const override;
@@ -33,6 +35,8 @@ namespace Mnemos
         HINSTANCE mHInstance;
         WNDCLASSA mWndClass;
         HWND mHwnd;
+        HDC mHDC;
+        HGLRC mGLContext;
         MSG mMsg;
 
         bool mShouldClose = false;

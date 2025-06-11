@@ -23,7 +23,7 @@ namespace Mnemos
 
         virtual void PollEvents() = 0;
         virtual void Update() = 0;
-        virtual void SwapBuffers() = 0;
+        virtual void SwapWindowBuffers() = 0;
         virtual bool CloseRequested() const = 0;
 
         virtual i16 GetWidth() const = 0;

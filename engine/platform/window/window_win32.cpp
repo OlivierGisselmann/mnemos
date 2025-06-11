@@ -2,6 +2,12 @@
 #if defined(MNEMOS_PLATFORM_WIN32)
 
 #include <platform/window/window_win32.hpp>
+#include <wglext.h>
+
+#include <iostream>
+
+PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = nullptr;
+PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = nullptr;
 
 namespace Mnemos
 {
@@ -13,28 +19,111 @@ namespace Mnemos
         mHeight = windowConfig->height;
         mLogger = windowConfig->logger;
         
-        mHInstance = GetModuleHandle(nullptr);
+        mHInstance = GetModuleHandle(0);
 
+        // Create Window Class
         const char* CLASS_NAME = "MainWindowClass";
-
         mWndClass = {};
         mWndClass.lpfnWndProc = MessageRouter;
         mWndClass.hInstance = mHInstance;
         mWndClass.lpszClassName = CLASS_NAME;
+        mWndClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+        mWndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 
-        RegisterClassA(&mWndClass);
+        if (!RegisterClassA(&mWndClass))
+            return false;
 
+        // Create window with attributes
         mHwnd = CreateWindowExA
         (
-            0, CLASS_NAME, windowConfig->title, WS_OVERLAPPEDWINDOW,
+            0, mWndClass.lpszClassName, windowConfig->title, WS_OVERLAPPEDWINDOW | WS_VISIBLE,
             CW_USEDEFAULT, CW_USEDEFAULT, windowConfig->width, windowConfig->height,
             nullptr, nullptr, mHInstance, this
         );
 
+        // Check that window creation didn't fail
         if(!mHwnd)
             return false;
 
+        // Get HDC
+        mHDC = GetDC(mHwnd);
+
+        // Set dummy pixel format
+        PIXELFORMATDESCRIPTOR pixelFormatDescriptor =
+        {
+            sizeof(PIXELFORMATDESCRIPTOR),
+            1,
+            PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
+            PFD_TYPE_RGBA,
+            32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            24, 8, 0, PFD_MAIN_PLANE, 0, 0, 0, 0
+        };
+
+        int pf = ChoosePixelFormat(mHDC, &pixelFormatDescriptor);
+        SetPixelFormat(mHDC, pf, &pixelFormatDescriptor);
+
+        // Create dummy GL context
+        HGLRC tempContext = wglCreateContext(mHDC);
+        wglMakeCurrent(mHDC, tempContext);
+
+        // Load WGL extensions
+        wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)
+            wglGetProcAddress("wglCreateContextAttribsARB");
+
+        wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)
+            wglGetProcAddress("wglChoosePixelFormatARB");
+
+        if (!wglCreateContextAttribsARB)
+            return false;
+
+        // Set real pixel format
+        int pixelAttribs[] =
+        {
+            WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
+            WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
+            WGL_DOUBLE_BUFFER_ARB,  GL_TRUE,
+            WGL_PIXEL_TYPE_ARB,     WGL_TYPE_RGBA_ARB,
+            WGL_COLOR_BITS_ARB,     32,
+            WGL_DEPTH_BITS_ARB,     24,
+            WGL_STENCIL_BITS_ARB,   8,
+            0
+        };
+
+        int pixelFormat;
+        UINT numFormats;
+        wglChoosePixelFormatARB(mHDC, pixelAttribs, nullptr, 1, &pixelFormat, &numFormats);
+
+        DescribePixelFormat(mHDC, pixelFormat, sizeof(pixelFormatDescriptor), &pixelFormatDescriptor);
+        SetPixelFormat(mHDC, pixelFormat, &pixelFormatDescriptor);
+
+        // Create real GL context
+        int contextAttribs[] =
+        {
+            WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
+            WGL_CONTEXT_MINOR_VERSION_ARB, 3,
+            WGL_CONTEXT_FLAGS_ARB, 0,
+            WGL_CONTEXT_PROFILE_MASK_ARB,
+            WGL_CONTEXT_CORE_PROFILE_BIT_ARB, 0
+        };
+
+        mGLContext = wglCreateContextAttribsARB(mHDC, nullptr, contextAttribs);
+
+        // Cleanup dummy context
+        wglMakeCurrent(nullptr, nullptr);
+        wglDeleteContext(tempContext);
+
+        // Make real context current
+        wglMakeCurrent(mHDC, mGLContext);
+
+        // Load GL functions with GLAD
+        if (!gladLoadGL())
+        {
+            mLogger->Log(LogLevel::ERR, "Failed to load OpenGL functions");
+            return false;
+        }
+
         ShowWindow(mHwnd, SW_SHOWDEFAULT);
+        UpdateWindow(mHwnd);
 
         mLogger->Log(LogLevel::TRACE, "Win32 Window initialization");
 
@@ -44,6 +133,11 @@ namespace Mnemos
     void Win32Window::Shutdown()
     {
         mLogger->Log(LogLevel::TRACE, "Win32 Window shutdown");
+
+        wglMakeCurrent(nullptr, nullptr);
+        wglDeleteContext(mGLContext);
+        ReleaseDC(mHwnd, mHDC);
+        DestroyWindow(mHwnd);
     }
 
     void Win32Window::Update()
@@ -61,9 +155,9 @@ namespace Mnemos
         }
     }
 
-    void Win32Window::SwapBuffers()
+    void Win32Window::SwapWindowBuffers()
     {
-
+        SwapBuffers(mHDC);
     }
 
     bool Win32Window::CloseRequested() const

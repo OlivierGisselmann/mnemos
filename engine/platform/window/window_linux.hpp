@@ -23,7 +23,7 @@ namespace Mnemos
 
         void PollEvents() override;
         void Update() override;
-        void SwapBuffers() override;
+        void SwapWindowBuffers() override;
         bool CloseRequested() const override;
 
         i16 GetWidth() const override;

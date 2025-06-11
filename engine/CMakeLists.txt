@@ -15,14 +15,18 @@ if(UNIX)
     find_package(X11 REQUIRED)
     target_link_libraries(${PROJECT_NAME} PUBLIC
         ${X11_LIBRARIES}
-        ${OPENGL_LIBRARIES}
+        OpenGL::GL OpenGL::GLX
     )
 elseif(WIN32)
     target_link_libraries(${PROJECT_NAME} PUBLIC
         winmm.lib
-        ${OPENGL_LIBRARIES}
+        OpenGL::GL
     )
 endif()
 
 # Include headers publicly
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ../include)
+target_include_directories(${PROJECT_NAME} PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${OPENGL_INCLUDE_DIRS}
+    ../include
+)

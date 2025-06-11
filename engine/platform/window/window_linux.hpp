@@ -8,6 +8,10 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <glad/glad.h>
+#include <GL/gl.h>
+#include <GL/glx.h>
+#include <GL/glxext.h>
 
 namespace Mnemos
 {
@@ -31,6 +35,7 @@ namespace Mnemos
         i8 mScreenId;
         Window mWindow;
         XSetWindowAttributes mAttributes{};
+        GLXContext mContext;
         bool mShouldClose = false;
 
         XEvent mEvent;

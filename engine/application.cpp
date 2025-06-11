@@ -11,6 +11,7 @@
 
 static Mnemos::ConsoleLogger sLogger;
 static Mnemos::FrameTimer sTimer;
+static Mnemos::GLRenderer sRenderer;
 
 namespace Mnemos
 {
@@ -30,8 +31,9 @@ namespace Mnemos
             mContext.window->Update();
             OnUpdate(mContext.timer->GetDeltaTime());
 
-            // TODO - Render loop
-            mContext.window->SwapBuffers();
+            mContext.renderer->BeginFrame();
+            mContext.renderer->DrawFrame();
+            mContext.renderer->EndFrame();
             OnRender();
 
             if(mContext.window->CloseRequested())
@@ -81,11 +83,23 @@ namespace Mnemos
             return false;
         }
 
+        // Renderer initialization
+        mContext.renderer = &sRenderer;
+        RendererInitInfo rendererConfig;
+        rendererConfig.window = mContext.window;
+        rendererConfig.logger = mContext.logger;
+        if(!mContext.renderer->Init(rendererConfig))
+        {
+            mContext.logger->Log(LogLevel::FATAL, "Failed to initialize renderer");
+            return false;
+        }
+
         return true;
     }
 
     void Application::ShutdownSubsystems()
     {
+        mContext.renderer->Shutdown();
         mContext.window->Shutdown();
         mContext.timer->Shutdown();
         mContext.logger->Shutdown();

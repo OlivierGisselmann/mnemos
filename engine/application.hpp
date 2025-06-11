@@ -1,9 +1,10 @@
 #pragma once
 
 #include <core/logging/console_logger.hpp>
+#include <core/time/frame_timer.hpp>
 #include <platform/platform.hpp>
 #include <platform/window/iwindow.hpp>
-#include <core/time/frame_timer.hpp>
+#include <renderer/opengl/glrenderer.hpp>
 
 namespace Mnemos
 {
@@ -12,6 +13,7 @@ namespace Mnemos
         ILogger* logger = nullptr;
         IWindow* window = nullptr;
         ITimer* timer = nullptr;
+        IRenderer* renderer = nullptr;
     };
 
     class Application

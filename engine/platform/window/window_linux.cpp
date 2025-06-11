@@ -115,7 +115,7 @@ namespace Mnemos
         glXMakeCurrent(mDisplay, mWindow, mContext);
 
         // Load GL Functions with GLAD
-        if (!gladLoadGLLoader((GLADloadproc)wglGetProcAddress))
+        if (!gladLoadGLLoader((GLADloadproc)glXGetProcAddress))
         {
             mLogger->Log(LogLevel::ERR, "Failed to load OpenGL functions");
             return false;

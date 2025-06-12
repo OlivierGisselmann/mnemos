@@ -29,7 +29,6 @@ namespace Mnemos
 
             // Update engine state
             mContext.window->PollEvents();
-            mContext.inputSystem->Update();
             OnUpdate(mContext.timer->GetDeltaTime());
 
             // Draw frame
@@ -44,6 +43,9 @@ namespace Mnemos
                 mContext.logger->LogTrace("Close requested");
                 mRunning = false;
             }
+
+            // Update input states
+            mContext.inputSystem->Update();
 
             // Limit framerate if enabled
             mContext.timer->Sleep();

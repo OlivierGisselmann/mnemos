@@ -4,8 +4,6 @@
 #include <platform/window/window_win32.hpp>
 #include <wglext.h>
 
-#include <iostream>
-
 PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = nullptr;
 PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = nullptr;
 
@@ -115,8 +113,8 @@ namespace Mnemos
         // Create real GL context
         int contextAttribs[] =
         {
-            WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
-            WGL_CONTEXT_MINOR_VERSION_ARB, 3,
+            WGL_CONTEXT_MAJOR_VERSION_ARB, 4,
+            WGL_CONTEXT_MINOR_VERSION_ARB, 5,
             WGL_CONTEXT_FLAGS_ARB, 0,
             WGL_CONTEXT_PROFILE_MASK_ARB,
             WGL_CONTEXT_CORE_PROFILE_BIT_ARB, 0

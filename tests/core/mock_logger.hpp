@@ -14,8 +14,9 @@ class MockLogger : public Mnemos::ILogger
 
     }
 
-    inline void Log(Mnemos::LogLevel level, const char* message, ...) override
-    {
-
-    }
+    inline void LogTrace(const std::string& message) override {}
+    inline void LogDebug(const std::string& message) override {}
+    inline void LogWarn(const std::string& message) override {}
+    inline void LogError(const std::string& message) override {}
+    inline void LogFatal(const std::string& message) override {}
 };

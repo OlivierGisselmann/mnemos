@@ -1,5 +1,7 @@
 #include <renderer/opengl/glrenderer.hpp>
 
+#include <iostream>
+
 namespace Mnemos
 {
     bool GLRenderer::Init(const SubsystemInitInfo& info)
@@ -12,14 +14,15 @@ namespace Mnemos
         // Setup OpenGL properties
         //glEnable(GL_DEPTH_TEST);
 
-        mLogger->Log(LogLevel::TRACE, "Renderer initialized");
+        mLogger->LogTrace("Renderer initialized");
+        mLogger->LogTrace((const char*)glGetString(GL_VERSION));
 
         return true;
     }
 
     void GLRenderer::Shutdown()
     {
-        mLogger->Log(LogLevel::TRACE, "Renderer shutdown");
+        mLogger->LogTrace("Renderer shutdown");
     }
 
     void GLRenderer::BeginFrame()

@@ -92,7 +92,7 @@ namespace Mnemos
 
         if(!glXCreateContextAttribsARB)
         {
-            mLogger->Log(LogLevel::ERR, "glXCreateCOntextAttribsARB not supported");
+            mLogger->LogError("glXCreateCOntextAttribsARB not supported");
             return false;
         }
 
@@ -117,18 +117,20 @@ namespace Mnemos
         // Load GL Functions with GLAD
         if (!gladLoadGLLoader((GLADloadproc)glXGetProcAddress))
         {
-            mLogger->Log(LogLevel::ERR, "Failed to load OpenGL functions");
+            mLogger->LogError("Failed to load OpenGL functions");
             return false;
         }
 
-        mLogger->Log(LogLevel::TRACE, "X11 Window initialized");
+        const GLubyte* version = glGetString(GL_VERSION);
+
+        mLogger->LogTrace( "X11 Window initialized");
 
         return true;
     }
 
     void LinuxWindow::Shutdown()
     {
-        mLogger->Log(LogLevel::TRACE, "X11 Window shutdown");
+        mLogger->LogTrace("X11 Window shutdown");
 
         // Destroy OpenGL context
         glXMakeCurrent(mDisplay, None, nullptr);

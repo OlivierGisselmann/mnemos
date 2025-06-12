@@ -33,7 +33,7 @@ namespace Mnemos
         // Initialize first time point
         mLast = Clock::now();
 
-        mLogger->Log(LogLevel::TRACE, "Frame Timer initialized");
+        mLogger->LogTrace("Frame Timer initialized");
 
         return true;
     }
@@ -44,7 +44,7 @@ namespace Mnemos
             timeEndPeriod(1);
         #endif
 
-        mLogger->Log(LogLevel::TRACE, "Frame Timer shutdown");
+        mLogger->LogTrace("Frame Timer shutdown");
     }
 
     void FrameTimer::Tick()

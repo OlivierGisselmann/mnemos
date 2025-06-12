@@ -65,7 +65,7 @@ namespace Mnemos
         timerConfig.logger = mContext.logger;
         if(!mContext.timer->Init(timerConfig))
         {
-            mContext.logger->Log(LogLevel::FATAL, "Failed to initialize timer");
+            mContext.logger->LogFatal("Failed to initialize timer");
             return false;
         }
 
@@ -79,7 +79,7 @@ namespace Mnemos
         windowConfig.logger = mContext.logger;
         if(!mContext.window->Init(windowConfig))
         {
-            mContext.logger->Log(LogLevel::FATAL, "Failed to initialize window");
+            mContext.logger->LogFatal("Failed to initialize window");
             return false;
         }
 
@@ -90,7 +90,7 @@ namespace Mnemos
         rendererConfig.logger = mContext.logger;
         if(!mContext.renderer->Init(rendererConfig))
         {
-            mContext.logger->Log(LogLevel::FATAL, "Failed to initialize renderer");
+            mContext.logger->LogFatal("Failed to initialize renderer");
             return false;
         }
 

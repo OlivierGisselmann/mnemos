@@ -33,14 +33,14 @@ namespace Mnemos
         void Update();
         void SetKeyDown(Key keycode, bool down);
         void SetMouseButtonDown(MouseButton button, bool down);
-        void SetMousePosition(i8 x, i8 y);
+        void SetMousePosition(i16 x, i16 y);
 
         bool IsKeyPressed(Key key) const;
         bool IsKeyDown(Key key) const;
         bool IsKeyReleased(Key key) const;
 
-        i8 GetMouseX() const;
-        i8 GetMouseY() const;
+        i16 GetMouseX() const;
+        i16 GetMouseY() const;
 
     protected:
         bool mCurrentKeys[(int)Key::Count] = {};
@@ -49,8 +49,8 @@ namespace Mnemos
         bool mCurrentMouse[(int)MouseButton::Count] = {};
         bool mPreviousMouse[(int)MouseButton::Count] = {};
 
-        i8 mMouseX = 0;
-        i8 mMouseY = 0;
+        i16 mMouseX = 0;
+        i16 mMouseY = 0;
 
         ILogger* mLogger = nullptr;
     };

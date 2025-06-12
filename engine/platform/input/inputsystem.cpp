@@ -43,7 +43,7 @@ namespace Mnemos
         mCurrentMouse[(int)button] = down;
     }
 
-    void InputSystem::SetMousePosition(i8 x, i8 y)
+    void InputSystem::SetMousePosition(i16 x, i16 y)
     {
         mMouseX = x;
         mMouseY = y;
@@ -70,12 +70,12 @@ namespace Mnemos
         return !mCurrentKeys[i] && mPreviousKeys[i];
     }
 
-    i8 InputSystem::GetMouseX() const
+    i16 InputSystem::GetMouseX() const
     {
         return mMouseX;
     }
 
-    i8 InputSystem::GetMouseY() const
+    i16 InputSystem::GetMouseY() const
     {
         return mMouseY;
     }

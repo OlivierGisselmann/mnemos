@@ -2,7 +2,7 @@
 #if defined(MNEMOS_PLATFORM_WIN32)
 
 #include <platform/window/window_win32.hpp>
-#include <wglext.h>
+#include <wgl/wglext.h>
 
 PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = nullptr;
 PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = nullptr;
@@ -12,15 +12,15 @@ namespace Mnemos
     static Key TranslateWin32Key(WPARAM wParam)
     {
         switch (wParam) {
-        case 'W': return Key::W;
-        case 'A': return Key::A;
-        case 'S': return Key::S;
-        case 'D': return Key::D;
+            case 'W': return Key::W;
+            case 'A': return Key::A;
+            case 'S': return Key::S;
+            case 'D': return Key::D;
 
-        case VK_SPACE: return Key::Space;
-        case VK_ESCAPE: return Key::Escape;
+            case VK_SPACE: return Key::Space;
+            case VK_ESCAPE: return Key::Escape;
 
-        default: return Key::Unknown;
+            default: return Key::Unknown;
         }
     }
 
@@ -148,10 +148,13 @@ namespace Mnemos
     {
         mLogger->LogTrace("Win32 Window shutdown");
 
-        wglMakeCurrent(nullptr, nullptr);
+        wglMakeCurrent(mHDC, nullptr);
         wglDeleteContext(mGLContext);
         ReleaseDC(mHwnd, mHDC);
         DestroyWindow(mHwnd);
+        UnregisterClass("MainWindowClass", GetModuleHandle(nullptr));
+
+        mHwnd = nullptr;
     }
 
     void Win32Window::PollEvents()
@@ -203,10 +206,9 @@ namespace Mnemos
         switch (uMsg)
         {
             case WM_CLOSE:
-                if(MessageBox(hwnd, "Quit application?", "Mnemos Engine", MB_OKCANCEL) == IDOK)
+                if (MessageBox(hwnd, "Quit application?", "Mnemos Engine", MB_OKCANCEL) == IDOK)
                     DestroyWindow(hwnd);
-                else
-                    return 0;
+                break;
             case WM_DESTROY:
                 PostQuitMessage(0);
                 mShouldClose = true;

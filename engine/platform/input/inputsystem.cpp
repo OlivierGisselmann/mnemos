@@ -24,7 +24,7 @@ namespace Mnemos
         // Swap key state from current to previous each frame
         for(int i = 0; i < (int)Key::Count; ++i)
         {
-            mPreviousKeys[i] = mCurrentKeys[i];
+            mPreviousKeys[i] = mCurrentKeys[i];           
         }
 
         for(int i = 0; i < (int)MouseButton::Count; ++i)

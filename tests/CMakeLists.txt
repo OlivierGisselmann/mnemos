@@ -25,6 +25,7 @@ add_executable(${PROJECT_NAME}
     types_test.cpp
     core/timer_test.cpp
     platform/window_test.cpp
+    platform/inputsystem_test.cpp
 )
 
 # Link engine library

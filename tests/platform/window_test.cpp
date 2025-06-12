@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <platform/input/inputsystem.hpp>
 #include <platform/platform.hpp>
 #include <platform/window/window_win32.hpp>
 #include <platform/window/window_linux.hpp>
@@ -10,6 +11,12 @@ TEST(WindowTest, CreateWindowWithCorrectSize)
 {
     MockLogger logger;
 
+    Mnemos::InputSystem input;
+    Mnemos::InputSystemInitInfo inputInfo;
+    inputInfo.logger = &logger;
+
+    input.Init(inputInfo);
+
     // Window initialization
     Mnemos::WindowInitInfo windowConfig;
     windowConfig.width = 1280;
@@ -17,6 +24,7 @@ TEST(WindowTest, CreateWindowWithCorrectSize)
     windowConfig.title = "TestWindow";
     windowConfig.fullscreen = false;
     windowConfig.logger = &logger;
+    windowConfig.inputSystem = &input;
 
     #if defined(MNEMOS_PLATFORM_LINUX)
         Mnemos::LinuxWindow window;
@@ -36,13 +44,20 @@ TEST(WindowTest, ShouldCloseDefaultsToFalse)
 {
     MockLogger logger;
 
+    Mnemos::InputSystem input;
+    Mnemos::InputSystemInitInfo inputInfo;
+    inputInfo.logger = &logger;
+
+    input.Init(inputInfo);
+
     // Window initialization
     Mnemos::WindowInitInfo windowConfig;
-    windowConfig.width = 800;
-    windowConfig.height = 600;
+    windowConfig.width = 1280;
+    windowConfig.height = 720;
     windowConfig.title = "TestWindow";
     windowConfig.fullscreen = false;
     windowConfig.logger = &logger;
+    windowConfig.inputSystem = &input;
 
     #if defined(MNEMOS_PLATFORM_LINUX)
         Mnemos::LinuxWindow window;
@@ -60,14 +75,21 @@ TEST(WindowTest, ShouldCloseDefaultsToFalse)
 TEST(WindowTest, CanPollEventsWithoutCrash)
 {
     MockLogger logger;
-    
+
+    Mnemos::InputSystem input;
+    Mnemos::InputSystemInitInfo inputInfo;
+    inputInfo.logger = &logger;
+
+    input.Init(inputInfo);
+
     // Window initialization
     Mnemos::WindowInitInfo windowConfig;
-    windowConfig.width = 800;
-    windowConfig.height = 600;
+    windowConfig.width = 1280;
+    windowConfig.height = 720;
     windowConfig.title = "TestWindow";
     windowConfig.fullscreen = false;
     windowConfig.logger = &logger;
+    windowConfig.inputSystem = &input;
 
     #if defined(MNEMOS_PLATFORM_LINUX)
         Mnemos::LinuxWindow window;

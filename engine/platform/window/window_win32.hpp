@@ -8,6 +8,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+#include <windowsx.h>
 
 #include <glad/glad.h>
 #include <gl/GL.h>

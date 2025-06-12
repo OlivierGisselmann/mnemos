@@ -39,8 +39,11 @@ namespace Mnemos
             OnRender();
 
             // Check for close request (input and destroy window)
-            if(mContext.window->CloseRequested() || mContext.inputSystem->IsKeyDown(Key::Escape))
+            if (mContext.window->CloseRequested() || mContext.inputSystem->IsKeyDown(Key::Escape))
+            {
+                mContext.logger->LogTrace("Close requested");
                 mRunning = false;
+            }
 
             // Limit framerate if enabled
             mContext.timer->Sleep();

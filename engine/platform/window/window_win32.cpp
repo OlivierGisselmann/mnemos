@@ -11,6 +11,21 @@ PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = nullptr;
 
 namespace Mnemos
 {
+    static Key TranslateWin32Key(WPARAM wParam)
+    {
+        switch (wParam) {
+        case 'W': return Key::W;
+        case 'A': return Key::A;
+        case 'S': return Key::S;
+        case 'D': return Key::D;
+
+        case VK_SPACE: return Key::Space;
+        case VK_ESCAPE: return Key::Escape;
+
+        default: return Key::Unknown;
+        }
+    }
+
     bool Win32Window::Init(const SubsystemInitInfo& info)
     {
         // Get the window configuration from init info
@@ -18,6 +33,7 @@ namespace Mnemos
         mWidth = windowConfig->width;
         mHeight = windowConfig->height;
         mLogger = windowConfig->logger;
+        mInputSystem = windowConfig->inputSystem;
         
         mHInstance = GetModuleHandle(0);
 
@@ -118,21 +134,21 @@ namespace Mnemos
         // Load GL functions with GLAD
         if (!gladLoadGL())
         {
-            mLogger->Log(LogLevel::ERR, "Failed to load OpenGL functions");
+            mLogger->LogError("Failed to load OpenGL functions");
             return false;
         }
 
         ShowWindow(mHwnd, SW_SHOWDEFAULT);
         UpdateWindow(mHwnd);
 
-        mLogger->Log(LogLevel::TRACE, "Win32 Window initialization");
+        mLogger->LogTrace("Win32 Window initialization");
 
         return true;
     }
 
     void Win32Window::Shutdown()
     {
-        mLogger->Log(LogLevel::TRACE, "Win32 Window shutdown");
+        mLogger->LogTrace("Win32 Window shutdown");
 
         wglMakeCurrent(nullptr, nullptr);
         wglDeleteContext(mGLContext);
@@ -197,6 +213,27 @@ namespace Mnemos
                 PostQuitMessage(0);
                 mShouldClose = true;
                 return 0;
+            case WM_KEYDOWN:
+                mInputSystem->SetKeyDown(TranslateWin32Key(wParam), true);
+                break;
+            case WM_KEYUP:
+                mInputSystem->SetKeyDown(TranslateWin32Key(wParam), false);
+                break;
+            case WM_MOUSEMOVE:
+                mInputSystem->SetMousePosition(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+                break;
+            case WM_LBUTTONDOWN:
+                mInputSystem->SetMouseButtonDown(MouseButton::Left, true);
+                break;
+            case WM_LBUTTONUP:
+                mInputSystem->SetMouseButtonDown(MouseButton::Left, false);
+                break;
+            case WM_RBUTTONDOWN:
+                mInputSystem->SetMouseButtonDown(MouseButton::Left, true);
+                break;
+            case WM_RBUTTONUP:
+                mInputSystem->SetMouseButtonDown(MouseButton::Left, false);
+                break;
         }
 
         return DefWindowProc(hwnd, uMsg, wParam, lParam);

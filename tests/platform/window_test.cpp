@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <platform/input/inputsystem.hpp>
 #include <platform/platform.hpp>
+#include <platform/input/inputsystem.hpp>
 #include <platform/window/window_win32.hpp>
 #include <platform/window/window_linux.hpp>
 
@@ -9,12 +9,13 @@
 
 TEST(WindowTest, CreateWindowWithCorrectSize)
 {
+    // Mock logger initialization
     MockLogger logger;
 
+    // Mock Input initialization
     Mnemos::InputSystem input;
     Mnemos::InputSystemInitInfo inputInfo;
     inputInfo.logger = &logger;
-
     input.Init(inputInfo);
 
     // Window initialization
@@ -42,12 +43,13 @@ TEST(WindowTest, CreateWindowWithCorrectSize)
 
 TEST(WindowTest, ShouldCloseDefaultsToFalse)
 {
+    // Mock logger initialization
     MockLogger logger;
 
+    // Mock Input initialization
     Mnemos::InputSystem input;
     Mnemos::InputSystemInitInfo inputInfo;
     inputInfo.logger = &logger;
-
     input.Init(inputInfo);
 
     // Window initialization
@@ -74,12 +76,13 @@ TEST(WindowTest, ShouldCloseDefaultsToFalse)
 
 TEST(WindowTest, CanPollEventsWithoutCrash)
 {
+    // Mock logger initialization
     MockLogger logger;
 
+    // Mock Input initialization
     Mnemos::InputSystem input;
     Mnemos::InputSystemInitInfo inputInfo;
     inputInfo.logger = &logger;
-
     input.Init(inputInfo);
 
     // Window initialization

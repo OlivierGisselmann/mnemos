@@ -22,7 +22,6 @@ namespace Mnemos
         virtual void Shutdown() override = 0;
 
         virtual void PollEvents() = 0;
-        virtual void Update() = 0;
         virtual void SwapWindowBuffers() = 0;
         virtual bool CloseRequested() const = 0;
 

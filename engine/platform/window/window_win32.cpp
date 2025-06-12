@@ -140,11 +140,6 @@ namespace Mnemos
         DestroyWindow(mHwnd);
     }
 
-    void Win32Window::Update()
-    {
-        
-    }
-
     void Win32Window::PollEvents()
     {
         // Loop through all events

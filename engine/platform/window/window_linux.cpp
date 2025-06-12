@@ -141,11 +141,6 @@ namespace Mnemos
         XCloseDisplay(mDisplay);
     }
 
-    void LinuxWindow::Update()
-    {
-        
-    }
-
     void LinuxWindow::PollEvents()
     {
         // Poll events

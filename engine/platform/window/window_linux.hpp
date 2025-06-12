@@ -22,7 +22,6 @@ namespace Mnemos
         void Shutdown() override;
 
         void PollEvents() override;
-        void Update() override;
         void SwapWindowBuffers() override;
         bool CloseRequested() const override;
 

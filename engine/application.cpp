@@ -28,7 +28,6 @@ namespace Mnemos
 
             // TODO - Check for window close & engine stop events
             mContext.window->PollEvents();
-            mContext.window->Update();
             OnUpdate(mContext.timer->GetDeltaTime());
 
             mContext.renderer->BeginFrame();

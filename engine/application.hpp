@@ -3,6 +3,7 @@
 #include <core/logging/console_logger.hpp>
 #include <core/time/frame_timer.hpp>
 #include <platform/platform.hpp>
+#include <platform/input/inputsystem.hpp>
 #include <platform/window/iwindow.hpp>
 #include <renderer/opengl/glrenderer.hpp>
 
@@ -11,6 +12,7 @@ namespace Mnemos
     struct ApplicationContext
     {
         ILogger* logger = nullptr;
+        InputSystem* inputSystem;
         IWindow* window = nullptr;
         ITimer* timer = nullptr;
         IRenderer* renderer = nullptr;

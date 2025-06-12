@@ -7,6 +7,23 @@ typedef GLXContext (*PFNGLXCREATECONTEXTATTRIBSARBPROC)(Display*, GLXFBConfig, G
 
 namespace Mnemos
 {
+    static Key TranslateX11Key(KeySym sym)
+    {
+        switch(sym)
+        {
+        case XK_w: return Key::W;
+        case XK_a: return Key::A;
+        case XK_s: return Key::S;
+        case XK_d: return Key::D;
+
+        case XK_space: return Key::Space;
+        case XK_Escape: return Key::Escape;
+
+        default: return Key::Unknown;
+        }
+        
+    }
+    
     bool LinuxWindow::Init(const SubsystemInitInfo& info)
     {
         // Get the window configuration from init info
@@ -14,6 +31,7 @@ namespace Mnemos
         mWidth = windowConfig->width;
         mHeight = windowConfig->height;
         mLogger = windowConfig->logger;
+        mInputSystem = windowConfig->inputSystem;
 
         // Get XLib display
         mDisplay = XOpenDisplay(nullptr);
@@ -55,7 +73,7 @@ namespace Mnemos
         mAttributes.border_pixel = BlackPixel(mDisplay, mScreenId);
         mAttributes.background_pixel = WhitePixel(mDisplay, mScreenId);
         mAttributes.override_redirect = True;
-        mAttributes.event_mask = ExposureMask | KeyPressMask;
+        mAttributes.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask | PointerMotionMask;
 
         // Create window
         mWindow = XCreateWindow(
@@ -151,8 +169,28 @@ namespace Mnemos
             // Close event
             if(mEvent.xclient.data.l[0] == mDeleteWindow)
                 mShouldClose = true;
-            else if(mEvent.type == DestroyNotify)
+
+            switch (mEvent.type)
+            {
+            case DestroyNotify:
                 mShouldClose = true;
+                break;
+            case KeyPress:
+            {
+                KeySym sym = XLookupKeysym(&mEvent.xkey, 0);
+                mInputSystem->SetKeyDown(TranslateX11Key(sym), true);
+                break;
+            }
+            case KeyRelease:
+            {
+                KeySym sym = XLookupKeysym(&mEvent.xkey, 0);
+                mInputSystem->SetKeyDown(TranslateX11Key(sym), false);
+                break;
+            }
+            case MotionNotify:
+                mInputSystem->SetMousePosition(mEvent.xmotion.x, mEvent.xmotion.y);
+                break;
+            }
         }
     }
 

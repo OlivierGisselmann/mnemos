@@ -12,6 +12,7 @@
 static Mnemos::ConsoleLogger sLogger;
 static Mnemos::FrameTimer sTimer;
 static Mnemos::GLRenderer sRenderer;
+static Mnemos::InputSystem sInputSystem;
 
 namespace Mnemos
 {
@@ -26,22 +27,25 @@ namespace Mnemos
         {
             mContext.timer->Tick();
 
-            // TODO - Check for window close & engine stop events
+            // Update engine state
             mContext.window->PollEvents();
+            mContext.inputSystem->Update();
             OnUpdate(mContext.timer->GetDeltaTime());
 
+            // Draw frame
             mContext.renderer->BeginFrame();
             mContext.renderer->DrawFrame();
             mContext.renderer->EndFrame();
             OnRender();
 
-            if(mContext.window->CloseRequested())
+            // Check for close request (input and destroy window)
+            if(mContext.window->CloseRequested() || mContext.inputSystem->IsKeyDown(Key::Escape))
                 mRunning = false;
 
+            // Limit framerate if enabled
             mContext.timer->Sleep();
         }
 
-        // TODO - Shutdown subsystems & cleanup
         OnShutdown();
         ShutdownSubsystems();
     }
@@ -68,6 +72,16 @@ namespace Mnemos
             return false;
         }
 
+        // Input System initialization
+        mContext.inputSystem = &sInputSystem;
+        InputSystemInitInfo inputConfig;
+        inputConfig.logger = mContext.logger;
+        if(!mContext.inputSystem->Init(inputConfig))
+        {
+            mContext.logger->LogFatal("Failed to initialize input system");
+            return false;
+        }
+
         // Window initialization
         mContext.window = &sWindow;
         WindowInitInfo windowConfig;
@@ -76,6 +90,7 @@ namespace Mnemos
         windowConfig.title = "eskesamarch?";
         windowConfig.fullscreen = false;
         windowConfig.logger = mContext.logger;
+        windowConfig.inputSystem = mContext.inputSystem;
         if(!mContext.window->Init(windowConfig))
         {
             mContext.logger->LogFatal("Failed to initialize window");
@@ -100,6 +115,7 @@ namespace Mnemos
     {
         mContext.renderer->Shutdown();
         mContext.window->Shutdown();
+        mContext.inputSystem->Shutdown();
         mContext.timer->Shutdown();
         mContext.logger->Shutdown();
     }

@@ -2,6 +2,7 @@
 
 #include <core/isubsystem.hpp>
 #include <core/logging/ilogger.hpp>
+#include <platform/input/inputsystem.hpp>
 #include <platform/types.hpp>
 
 namespace Mnemos
@@ -13,6 +14,7 @@ namespace Mnemos
         const char* title = nullptr;
         bool fullscreen = false;
         ILogger* logger = nullptr;
+        InputSystem* inputSystem;
     };
 
     class IWindow : public ISubsystem
@@ -33,5 +35,6 @@ namespace Mnemos
     protected:
         i16 mWidth;
         i16 mHeight;
+        InputSystem* mInputSystem;
     };
 }

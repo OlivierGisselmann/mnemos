@@ -8,6 +8,7 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <X11/keysym.h>
 #include <glad/glad.h>
 #include <GL/gl.h>
 #include <GL/glx.h>

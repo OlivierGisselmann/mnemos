@@ -1,7 +1,9 @@
 #pragma once
 
 #include <core/isubsystem.hpp>
-#include <sstream>
+
+#include <format>
+#include <string>
 
 namespace Mnemos
 {

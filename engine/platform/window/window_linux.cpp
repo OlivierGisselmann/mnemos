@@ -73,7 +73,10 @@ namespace Mnemos
         mAttributes.border_pixel = BlackPixel(mDisplay, mScreenId);
         mAttributes.background_pixel = WhitePixel(mDisplay, mScreenId);
         mAttributes.override_redirect = True;
-        mAttributes.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask | PointerMotionMask;
+        mAttributes.event_mask = ExposureMask |
+                KeyPressMask | KeyReleaseMask |
+                ButtonPressMask | ButtonReleaseMask |
+                PointerMotionMask;
 
         // Create window
         mWindow = XCreateWindow(
@@ -91,6 +94,9 @@ namespace Mnemos
         // Redirect close event
         mDeleteWindow = XInternAtom(mDisplay, "WM_DELETE_WINDOW", False);
         XSetWMProtocols(mDisplay, mWindow, &mDeleteWindow, 1);
+
+        // Disable input auto repeat
+        XAutoRepeatOff(mDisplay);
 
         // Set window title
         XStoreName(mDisplay, mWindow, windowConfig->title);
@@ -190,6 +196,30 @@ namespace Mnemos
             case MotionNotify:
                 mInputSystem->SetMousePosition(mEvent.xmotion.x, mEvent.xmotion.y);
                 break;
+            case ButtonPress:
+            { 
+                switch (mEvent.xbutton.button)
+                {
+                case Button1: mInputSystem->SetMouseButtonDown(MouseButton::Left, true); break;
+                case Button2: mInputSystem->SetMouseButtonDown(MouseButton::Right, true); break;
+                case Button3: mInputSystem->SetMouseButtonDown(MouseButton::Middle, true); break;
+                default: break;
+                }
+
+                mLogger->LogDebug("press");
+            }
+            case ButtonRelease:
+            { 
+                switch (mEvent.xbutton.button)
+                {
+                case Button1: mInputSystem->SetMouseButtonDown(MouseButton::Left, false); break;
+                case Button2: mInputSystem->SetMouseButtonDown(MouseButton::Right, false); break;
+                case Button3: mInputSystem->SetMouseButtonDown(MouseButton::Middle, false); break;
+                default: break;
+                }
+
+                mLogger->LogDebug("release");
+            }
             }
         }
     }

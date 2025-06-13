@@ -73,10 +73,7 @@ namespace Mnemos
         mAttributes.border_pixel = BlackPixel(mDisplay, mScreenId);
         mAttributes.background_pixel = WhitePixel(mDisplay, mScreenId);
         mAttributes.override_redirect = True;
-        mAttributes.event_mask = ExposureMask |
-                KeyPressMask | KeyReleaseMask |
-                ButtonPressMask | ButtonReleaseMask |
-                PointerMotionMask;
+        mAttributes.event_mask = ExposureMask;
 
         // Create window
         mWindow = XCreateWindow(
@@ -94,6 +91,9 @@ namespace Mnemos
         // Redirect close event
         mDeleteWindow = XInternAtom(mDisplay, "WM_DELETE_WINDOW", False);
         XSetWMProtocols(mDisplay, mWindow, &mDeleteWindow, 1);
+
+        // Enable event masks for input
+        XSelectInput(mDisplay, mWindow, KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
 
         // Disable input auto repeat
         XAutoRepeatOff(mDisplay);
@@ -201,24 +201,24 @@ namespace Mnemos
                 switch (mEvent.xbutton.button)
                 {
                 case Button1: mInputSystem->SetMouseButtonDown(MouseButton::Left, true); break;
-                case Button2: mInputSystem->SetMouseButtonDown(MouseButton::Right, true); break;
-                case Button3: mInputSystem->SetMouseButtonDown(MouseButton::Middle, true); break;
+                case Button2: mInputSystem->SetMouseButtonDown(MouseButton::Middle, true); break;
+                case Button3: mInputSystem->SetMouseButtonDown(MouseButton::Right, true); break;
                 default: break;
                 }
 
-                mLogger->LogDebug("press");
+                break;
             }
             case ButtonRelease:
             { 
                 switch (mEvent.xbutton.button)
                 {
                 case Button1: mInputSystem->SetMouseButtonDown(MouseButton::Left, false); break;
-                case Button2: mInputSystem->SetMouseButtonDown(MouseButton::Right, false); break;
-                case Button3: mInputSystem->SetMouseButtonDown(MouseButton::Middle, false); break;
+                case Button2: mInputSystem->SetMouseButtonDown(MouseButton::Middle, false); break;
+                case Button3: mInputSystem->SetMouseButtonDown(MouseButton::Right, false); break;
                 default: break;
                 }
 
-                mLogger->LogDebug("release");
+                break;
             }
             }
         }

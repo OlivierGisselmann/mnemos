@@ -74,7 +74,7 @@ namespace Mnemos
     {
         int i = (int)button;
 
-        // If key is pressed this frame but wasn't last frame
+        // If button is pressed this frame but wasn't last frame
         return mCurrentMouse[i] && !mPreviousMouse[i];
     }
 
@@ -87,7 +87,7 @@ namespace Mnemos
     {
         int i = (int)button;
 
-        // If key isn't pressed this frame but was last frame
+        // If button isn't pressed this frame but was last frame
         return !mCurrentMouse[i] && mPreviousMouse[i];
     }
 

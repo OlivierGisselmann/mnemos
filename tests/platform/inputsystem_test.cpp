@@ -94,16 +94,15 @@ namespace Mnemos
         input.Init(inputInfo);
 
         input.SetMouseButtonDown(MouseButton::Left, true);
+
+        EXPECT_TRUE(input.IsMouseButtonDown(MouseButton::Left));
+        EXPECT_TRUE(input.IsMouseButtonPressed(MouseButton::Left));
+
         input.Update();
-
-        //EXPECT_TRUE(input.IsMouseButtonDown(MouseButton::Left));
-        //EXPECT_TRUE(input.IsMouseButtonPressed(MouseButton::Left));
-
         input.SetMouseButtonDown(MouseButton::Left, false);
-        input.Update();
 
-        //EXPECT_FALSE(input.IsMouseButtonDown(MouseButton::Left));
-        //EXPECT_TRUE(input.IsMouseButtonReleased(MouseButton::Left));
+        EXPECT_FALSE(input.IsMouseButtonDown(MouseButton::Left));
+        EXPECT_TRUE(input.IsMouseButtonReleased(MouseButton::Left));
     }
 
     TEST(InputSystemTest, MousePositionTracking)

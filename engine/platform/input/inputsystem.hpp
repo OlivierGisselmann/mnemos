@@ -39,6 +39,10 @@ namespace Mnemos
         bool IsKeyDown(Key key) const;
         bool IsKeyReleased(Key key) const;
 
+        bool IsMouseButtonPressed(MouseButton button) const;
+        bool IsMouseButtonDown(MouseButton button) const;
+        bool IsMouseButtonReleased(MouseButton button) const;
+
         i16 GetMouseX() const;
         i16 GetMouseY() const;
 

@@ -70,6 +70,27 @@ namespace Mnemos
         return !mCurrentKeys[i] && mPreviousKeys[i];
     }
 
+    bool InputSystem::IsMouseButtonPressed(MouseButton button) const
+    {
+        int i = (int)button;
+
+        // If key is pressed this frame but wasn't last frame
+        return mCurrentMouse[i] && !mPreviousMouse[i];
+    }
+
+    bool InputSystem::IsMouseButtonDown(MouseButton button) const
+    {
+        return mCurrentMouse[(int)button];
+    }
+
+    bool InputSystem::IsMouseButtonReleased(MouseButton button) const
+    {
+        int i = (int)button;
+
+        // If key isn't pressed this frame but was last frame
+        return !mCurrentMouse[i] && mPreviousMouse[i];
+    }
+
     i16 InputSystem::GetMouseX() const
     {
         return mMouseX;

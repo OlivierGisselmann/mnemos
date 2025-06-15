@@ -21,7 +21,6 @@ namespace Mnemos
 
         default: return Key::Unknown;
         }
-        
     }
     
     bool LinuxWindow::Init(const SubsystemInitInfo& info)

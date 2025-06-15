@@ -229,10 +229,10 @@ namespace Mnemos
                 mInputSystem->SetMouseButtonDown(MouseButton::Left, false);
                 break;
             case WM_RBUTTONDOWN:
-                mInputSystem->SetMouseButtonDown(MouseButton::Left, true);
+                mInputSystem->SetMouseButtonDown(MouseButton::Right, true);
                 break;
             case WM_RBUTTONUP:
-                mInputSystem->SetMouseButtonDown(MouseButton::Left, false);
+                mInputSystem->SetMouseButtonDown(MouseButton::Right, false);
                 break;
         }
 

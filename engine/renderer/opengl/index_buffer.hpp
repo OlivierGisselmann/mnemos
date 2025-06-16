@@ -18,7 +18,10 @@ namespace Mnemos
         void Bind() const;
         void Unbind() const;
 
+        u32 GetCount() const;
+
     private:
         GLuint mID;
+        u32 mCount;
     };
 }

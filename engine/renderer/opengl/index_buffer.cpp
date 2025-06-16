@@ -14,6 +14,8 @@ namespace Mnemos
 
     void IndexBuffer::LoadData(const std::vector<u32>& indices)
     {
+        mCount = indices.size();
+        
         // Create GPU Buffer
         glGenBuffers(1, &mID);
 
@@ -32,5 +34,10 @@ namespace Mnemos
     void IndexBuffer::Unbind() const
     {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+
+    u32 IndexBuffer::GetCount() const
+    {
+        return mCount;
     }
 }

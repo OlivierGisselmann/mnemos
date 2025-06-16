@@ -19,13 +19,15 @@ namespace Mnemos
     class Shader
     {
     public:
-        Shader(const char* vertexShaderPath, const char* fragmentShaderPath);
+        Shader(const std::string vertexShaderPath, const std::string fragmentShaderPath);
         ~Shader();
 
         void Use();
+        void Reload();
 
     private:
-        void LoadShader(ShaderType type, const char* path);
+        void Create();
+        void LoadShader(ShaderType type);
         void CheckErrors(ShaderType type, u32 id);
 
         u32 mID;
@@ -33,7 +35,8 @@ namespace Mnemos
 
         const char* vCode;
         const char* fCode;
-
+        std::string vPath;
+        std::string fPath;
         std::string vFileContent;
         std::string fFileContent;
     };

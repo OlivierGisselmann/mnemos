@@ -2,11 +2,22 @@
 
 namespace Mnemos
 {
-    Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath)
+    Shader::Shader(const std::string vertexShaderPath, const std::string fragmentShaderPath)
+    : vPath(vertexShaderPath), fPath(fragmentShaderPath)
+    {
+        Create();
+    }
+
+    Shader::~Shader()
+    {
+        glDeleteProgram(mID);
+    }
+
+    void Shader::Create()
     {
         // Load shader contents
-        LoadShader(ShaderType::VERTEX, vertexShaderPath);
-        LoadShader(ShaderType::FRAGMENT, fragmentShaderPath);
+        LoadShader(ShaderType::VERTEX);
+        LoadShader(ShaderType::FRAGMENT);
 
         // Create program and link shaders to it
         mID = glCreateProgram();
@@ -21,9 +32,9 @@ namespace Mnemos
         glDeleteShader(mFragment);
     }
 
-    Shader::~Shader()
+    void Shader::Reload()
     {
-        glDeleteProgram(mID);
+        Create();
     }
 
     void Shader::Use()
@@ -31,14 +42,14 @@ namespace Mnemos
         glUseProgram(mID);
     }
 
-    void Shader::LoadShader(ShaderType type, const char* path)
+    void Shader::LoadShader(ShaderType type)
     {
         switch (type)
         {
         case ShaderType::VERTEX:
         {
             // Read file into string and get pointer to it
-            vFileContent = ReadFile(path);
+            vFileContent = ReadFile(vPath.c_str());
             vCode = vFileContent.c_str();
 
             // Create shader and compile its code
@@ -52,7 +63,7 @@ namespace Mnemos
         case ShaderType::FRAGMENT:
         {
             // Read file into string and get pointer to it
-            fFileContent = ReadFile(path);
+            fFileContent = ReadFile(fPath.c_str());
             fCode = fFileContent.c_str();
 
             // Create shader and compile its code

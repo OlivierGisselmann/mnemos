@@ -40,6 +40,7 @@ namespace Mnemos
         // Get the renderer configuration from init info
         const auto* rendererConfig = dynamic_cast<const RendererInitInfo*>(&info);
         mLogger = rendererConfig->logger;
+        mInput = rendererConfig->input;
         mWindow = rendererConfig->window;
 
         // Setup OpenGL properties
@@ -79,12 +80,24 @@ namespace Mnemos
     {
         glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        // Switch geometry display mode on input
+        if(mInput->IsKeyPressed(Key::W))
+            mPolygonMode = !mPolygonMode;
     }
 
     void GLRenderer::DrawFrame()
     {
+        // Geometry diplay mode
+        if(mPolygonMode)
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        else
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
         glUseProgram(program);
+
         vao->Bind();
+        
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     }
 

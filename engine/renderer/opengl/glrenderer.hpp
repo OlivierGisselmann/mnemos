@@ -1,6 +1,7 @@
 #pragma once
 
 #include <renderer/irenderer.hpp>
+
 #include <glad/glad.h>
 
 namespace Mnemos
@@ -17,6 +18,9 @@ namespace Mnemos
 
     private:
         IWindow* mWindow = nullptr;
+        InputSystem* mInput = nullptr;
         ILogger* mLogger = nullptr;
+
+        bool mPolygonMode = false;
     };
 }

@@ -8,6 +8,7 @@ namespace Mnemos
     struct RendererInitInfo : public SubsystemInitInfo
     {
         IWindow* window = nullptr;
+        InputSystem* input = nullptr;
         ILogger* logger = nullptr;
     };
 

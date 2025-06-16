@@ -2,7 +2,6 @@
 
 #include <core/isubsystem.hpp>
 
-#include <format>
 #include <string>
 
 namespace Mnemos

@@ -1,12 +1,14 @@
 #include <renderer/opengl/glrenderer.hpp>
 
-std::vector<f32> vertices = {
-    0.5f,  0.5f, 0.0f,  // top right
-    0.5f, -0.5f, 0.0f,  // bottom right
-    -0.5f, -0.5f, 0.0f,  // bottom left
-    -0.5f,  0.5f, 0.0f   // top left 
+std::vector<f32> vertices {
+    // positions          // colors           // texture coords
+     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
 };
-std::vector<u32> indices = {  // note that we start from 0!
+
+std::vector<u32> indices {  // note that we start from 0!
     0, 1, 3,  // first Triangle
     1, 2, 3   // second Triangle
 };
@@ -14,6 +16,7 @@ std::vector<u32> indices = {  // note that we start from 0!
 namespace Mnemos
 {
     VertexArray* vao;
+    Texture* texture;
     Shader* shader;
 
     bool GLRenderer::Init(const SubsystemInitInfo& info)
@@ -28,6 +31,8 @@ namespace Mnemos
         //glEnable(GL_DEPTH_TEST);
 
         shader = new Shader("/home/thanion/dev/graphics/mnemos/resources/shaders/shader.vert", "/home/thanion/dev/graphics/mnemos/resources/shaders/shader.frag");
+
+        texture = new Texture("/home/thanion/dev/graphics/mnemos/resources/textures/brick.jpg");
 
         vao = new VertexArray(indices, vertices);
 
@@ -78,7 +83,7 @@ namespace Mnemos
 
     void GLRenderer::ClearScreen()
     {
-        glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
@@ -86,6 +91,7 @@ namespace Mnemos
     {
         shader.Use();
         vao.Bind();
+        texture->Bind();
 
         glDrawElements(GL_TRIANGLES, vao.GetIndicesSize(), GL_UNSIGNED_INT, 0);
 

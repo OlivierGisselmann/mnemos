@@ -25,6 +25,9 @@ namespace Mnemos
         void Use();
         void Reload();
 
+        template<typename T>
+        void SetUniform(const std::string& name, T value);
+
     private:
         void Create();
         void LoadShader(ShaderType type);

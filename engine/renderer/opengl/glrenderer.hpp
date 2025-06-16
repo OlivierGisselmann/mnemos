@@ -2,6 +2,7 @@
 
 #include <renderer/irenderer.hpp>
 #include <renderer/opengl/shader.hpp>
+#include <renderer/opengl/texture.hpp>
 #include <renderer/opengl/vertex_array.hpp>
 
 #include <glad/glad.h>

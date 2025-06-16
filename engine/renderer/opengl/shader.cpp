@@ -42,6 +42,18 @@ namespace Mnemos
         glUseProgram(mID);
     }
 
+    template<>
+    void Shader::SetUniform(const std::string& name, i32 value)
+    {
+        glUniform1i(glGetUniformLocation(mID, name.c_str()), value);
+    }
+
+    template<>
+    void Shader::SetUniform(const std::string& name, f32 value)
+    {
+        glUniform1f(glGetUniformLocation(mID, name.c_str()), value);
+    }
+
     void Shader::LoadShader(ShaderType type)
     {
         switch (type)

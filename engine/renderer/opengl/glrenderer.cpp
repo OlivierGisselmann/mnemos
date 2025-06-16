@@ -1,20 +1,4 @@
 #include <renderer/opengl/glrenderer.hpp>
-#include <renderer/opengl/vertex_array.hpp>
-
-#include <iostream>
-
-const char *vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-const char *fragmentShaderSource = "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\n\0";
 
 std::vector<f32> vertices = {
     0.5f,  0.5f, 0.0f,  // top right
@@ -27,13 +11,10 @@ std::vector<u32> indices = {  // note that we start from 0!
     1, 2, 3   // second Triangle
 };
 
-u32 vShader;
-u32 fShader;
-u32 program;
-
 namespace Mnemos
 {
     VertexArray* vao;
+    Shader* shader;
 
     bool GLRenderer::Init(const SubsystemInitInfo& info)
     {
@@ -46,18 +27,7 @@ namespace Mnemos
         // Setup OpenGL properties
         //glEnable(GL_DEPTH_TEST);
 
-        vShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vShader, 1, &vertexShaderSource, nullptr);
-        glCompileShader(vShader);
-
-        fShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fShader, 1, &fragmentShaderSource, nullptr);
-        glCompileShader(fShader);
-
-        program = glCreateProgram();
-        glAttachShader(program, vShader);
-        glAttachShader(program, fShader);
-        glLinkProgram(program);
+        shader = new Shader("/home/thanion/dev/graphics/mnemos/resources/shaders/shader.vert", "/home/thanion/dev/graphics/mnemos/resources/shaders/shader.frag");
 
         vao = new VertexArray(indices, vertices);
 
@@ -69,9 +39,8 @@ namespace Mnemos
 
     void GLRenderer::Shutdown()
     {
-        glDeleteProgram(program);
-
         delete vao;
+        delete shader;
 
         mLogger->LogTrace("Renderer shutdown");
     }
@@ -94,8 +63,7 @@ namespace Mnemos
         else
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-        glUseProgram(program);
-
+        shader->Use();
         vao->Bind();
         
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

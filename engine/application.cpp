@@ -106,6 +106,7 @@ namespace Mnemos
         mContext.renderer = &sRenderer;
         RendererInitInfo rendererConfig;
         rendererConfig.window = mContext.window;
+        rendererConfig.input = mContext.inputSystem;
         rendererConfig.logger = mContext.logger;
         if(!mContext.renderer->Init(rendererConfig))
         {

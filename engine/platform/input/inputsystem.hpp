@@ -8,7 +8,7 @@ namespace Mnemos
 {
     enum class Key
     {
-        W, A, S, D,
+        W, A, S, D, R,
         Escape, Space,
         Unknown, Count
     };

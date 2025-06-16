@@ -16,6 +16,7 @@ namespace Mnemos
             case 'A': return Key::A;
             case 'S': return Key::S;
             case 'D': return Key::D;
+            case 'R': return Key::R;
 
             case VK_SPACE: return Key::Space;
             case VK_ESCAPE: return Key::Escape;

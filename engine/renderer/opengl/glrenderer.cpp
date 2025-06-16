@@ -47,12 +47,17 @@ namespace Mnemos
 
     void GLRenderer::BeginFrame()
     {
-        glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        ClearScreen();
 
         // Switch geometry display mode on input
         if(mInput->IsKeyPressed(Key::W))
             mPolygonMode = !mPolygonMode;
+
+        if(mInput->IsKeyPressed(Key::R))
+        {
+            shader->Reload();
+            mLogger->LogTrace("Shaders reloaded");
+        }
     }
 
     void GLRenderer::DrawFrame()
@@ -62,17 +67,28 @@ namespace Mnemos
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         else
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-        shader->Use();
-        vao->Bind();
         
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+        DrawIndexed(*shader, *vao);
     }
 
     void GLRenderer::EndFrame()
     {
         mWindow->SwapWindowBuffers();
+    }
 
-        vao->Unbind();
+    void GLRenderer::ClearScreen()
+    {
+        glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
+
+    void GLRenderer::DrawIndexed(Shader& shader, VertexArray& vao)
+    {
+        shader.Use();
+        vao.Bind();
+
+        glDrawElements(GL_TRIANGLES, vao.GetIndicesSize(), GL_UNSIGNED_INT, 0);
+
+        vao.Unbind();
     }
 }

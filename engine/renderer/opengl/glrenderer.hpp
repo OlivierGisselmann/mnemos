@@ -19,6 +19,9 @@ namespace Mnemos
         void EndFrame() override;
 
     private:
+        void ClearScreen();
+        void DrawIndexed(Shader& shader, VertexArray& vao);
+
         IWindow* mWindow = nullptr;
         InputSystem* mInput = nullptr;
         ILogger* mLogger = nullptr;

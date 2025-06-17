@@ -23,10 +23,16 @@ namespace Mnemos
         void ClearScreen();
         void DrawIndexed(Shader& shader, VertexArray& vao);
 
+        void CheckCanvasResize();
+
         IWindow* mWindow = nullptr;
         InputSystem* mInput = nullptr;
         ILogger* mLogger = nullptr;
 
         bool mPolygonMode = false;
+        
+        bool mResizeViewport = false;
+        i16 mCanvasCurrentWidth = 0;
+        i16 mCanvasCurrentHeight = 0;
     };
 }

@@ -240,6 +240,12 @@ namespace Mnemos
         return DefWindowProc(hwnd, uMsg, wParam, lParam);
     }
 
+    void Win32Window::Resize(i16 width, i16 height)
+    {
+        mWidth = width;
+        mHeight = height;
+    }
+
     i16 Win32Window::GetWidth() const
     {
         return mWidth;

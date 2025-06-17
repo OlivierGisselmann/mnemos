@@ -52,6 +52,8 @@ namespace Mnemos
 
     void GLRenderer::BeginFrame()
     {
+        CheckCanvasResize();
+
         ClearScreen();
 
         // Switch geometry display mode on input
@@ -79,6 +81,9 @@ namespace Mnemos
     void GLRenderer::EndFrame()
     {
         mWindow->SwapWindowBuffers();
+
+        mCanvasCurrentWidth = mWindow->GetWidth();
+        mCanvasCurrentHeight = mWindow->GetHeight();
     }
 
     void GLRenderer::ClearScreen()
@@ -96,5 +101,18 @@ namespace Mnemos
         glDrawElements(GL_TRIANGLES, vao.GetIndicesSize(), GL_UNSIGNED_INT, 0);
 
         vao.Unbind();
+    }
+
+    void GLRenderer::CheckCanvasResize()
+    {
+        // Check if the viewport is not the same size as the window
+        if(mCanvasCurrentWidth != mWindow->GetWidth() || mCanvasCurrentHeight != mWindow->GetHeight())
+            mResizeViewport = true;
+
+        if(mResizeViewport)
+        {
+            glViewport(0, 0, mWindow->GetWidth(), mWindow->GetHeight());
+            mResizeViewport = false;
+        }
     }
 }

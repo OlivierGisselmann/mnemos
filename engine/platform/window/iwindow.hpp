@@ -27,6 +27,7 @@ namespace Mnemos
         virtual void SwapWindowBuffers() = 0;
         virtual bool CloseRequested() const = 0;
 
+        virtual void Resize(i16 width, i16 height) = 0;
         virtual i16 GetWidth() const = 0;
         virtual i16 GetHeight() const = 0;
 

@@ -26,6 +26,7 @@ namespace Mnemos
         void SwapWindowBuffers() override;
         bool CloseRequested() const override;
 
+        void Resize(i16 width, i16 height) override;
         i16 GetWidth() const override;
         i16 GetHeight() const override;
 

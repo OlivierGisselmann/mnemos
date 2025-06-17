@@ -93,7 +93,7 @@ namespace Mnemos
         XSetWMProtocols(mDisplay, mWindow, &mDeleteWindow, 1);
 
         // Enable event masks for input
-        XSelectInput(mDisplay, mWindow, KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
+        XSelectInput(mDisplay, mWindow, KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask | StructureNotifyMask);
 
         // Disable input auto repeat
         XAutoRepeatOff(mDisplay);
@@ -181,6 +181,12 @@ namespace Mnemos
             case DestroyNotify:
                 mShouldClose = true;
                 break;
+            case ConfigureNotify:
+            {
+                XConfigureEvent xce = mEvent.xconfigure;
+                Resize(xce.width, xce.height);
+                break;
+            }
             case KeyPress:
             {
                 KeySym sym = XLookupKeysym(&mEvent.xkey, 0);
@@ -232,6 +238,12 @@ namespace Mnemos
     bool LinuxWindow::CloseRequested() const
     {
         return mShouldClose;
+    }
+
+    void LinuxWindow::Resize(i16 width, i16 height)
+    {
+        mWidth = width;
+        mHeight = height;
     }
 
     i16 LinuxWindow::GetWidth() const

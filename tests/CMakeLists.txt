@@ -24,13 +24,11 @@ enable_testing()
 add_executable(${PROJECT_NAME}
     core/timer_test.cpp
     core/filesystem_test.cpp
+    math/vector_test.cpp
     platform/inputsystem_test.cpp
     platform/types_test.cpp
     platform/window_test.cpp
 )
-
-# Copy testing mock file into binary directory
-configure_file(${CMAKE_CURRENT_LIST_DIR}/core/mock_file.txt ${CMAKE_BINARY_DIR}/tests/mock_file.txt COPYONLY)
 
 # Link engine library
 target_link_libraries(${PROJECT_NAME} PUBLIC GTest::gmock GTest::gtest_main Engine)

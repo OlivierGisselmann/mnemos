@@ -1,10 +1,13 @@
 #include <gtest/gtest.h>
 
-#include <core/filesystem/filesystem.hpp>
+#include <core/filesystem/resource_manager.hpp>
 
 TEST(FileSystemTest, ReadsFileContent)
 {
-    const std::string content = Mnemos::ReadFile("./mock_file.txt");
+    Mnemos::ResourceManager& resourceManager = Mnemos::ResourceManager::Get();
+
+    resourceManager.SetAssetRoot("./");
+    const std::string content = resourceManager.ReadTextFile("mock_file.txt");
 
     EXPECT_EQ(content, "File is good!");
 }

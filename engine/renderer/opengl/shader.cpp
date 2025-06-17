@@ -61,7 +61,7 @@ namespace Mnemos
         case ShaderType::VERTEX:
         {
             // Read file into string and get pointer to it
-            vFileContent = ReadFile(vPath.c_str());
+            vFileContent = ResourceManager::Get().ReadTextFile(vPath);
             vCode = vFileContent.c_str();
 
             // Create shader and compile its code
@@ -75,7 +75,7 @@ namespace Mnemos
         case ShaderType::FRAGMENT:
         {
             // Read file into string and get pointer to it
-            fFileContent = ReadFile(fPath.c_str());
+            fFileContent = ResourceManager::Get().ReadTextFile(fPath);
             fCode = fFileContent.c_str();
 
             // Create shader and compile its code

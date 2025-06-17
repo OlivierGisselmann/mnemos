@@ -1,7 +1,6 @@
 #include <renderer/opengl/texture.hpp>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
+#include <iostream>
 
 namespace Mnemos
 {
@@ -16,17 +15,10 @@ namespace Mnemos
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        // Load image file
-        int width, height, channels;
-        u8* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+        ImageData data = ResourceManager::Get().ReadImageFile(path);
 
-        if(data)
-        {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-            glGenerateMipmap(GL_TEXTURE_2D);
-        }
-
-        stbi_image_free(data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, data.width, data.height, 0, GL_RGB, GL_UNSIGNED_BYTE, data.pixels.data());
+        glGenerateMipmap(GL_TEXTURE_2D);
     }
 
     Texture::~Texture()

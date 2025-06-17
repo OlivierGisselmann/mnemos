@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/filesystem/filesystem.hpp>
+#include <core/filesystem/resource_manager.hpp>
 #include <platform/types.hpp>
 
 #include <glad/glad.h>

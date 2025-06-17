@@ -30,9 +30,10 @@ namespace Mnemos
         // Setup OpenGL properties
         //glEnable(GL_DEPTH_TEST);
 
-        shader = new Shader("/home/thanion/dev/graphics/mnemos/resources/shaders/shader.vert", "/home/thanion/dev/graphics/mnemos/resources/shaders/shader.frag");
+        // Load resources
+        shader = new Shader("shaders/shader.vert", "shaders/shader.frag");
 
-        texture = new Texture("/home/thanion/dev/graphics/mnemos/resources/textures/brick.jpg");
+        texture = new Texture("textures/brick.jpg");
 
         vao = new VertexArray(indices, vertices);
 

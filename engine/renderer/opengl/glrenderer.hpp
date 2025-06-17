@@ -1,5 +1,6 @@
 #pragma once
 
+#include <core/filesystem/resource_manager.hpp>
 #include <renderer/irenderer.hpp>
 #include <renderer/opengl/shader.hpp>
 #include <renderer/opengl/texture.hpp>

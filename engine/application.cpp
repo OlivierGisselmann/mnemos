@@ -65,6 +65,9 @@ namespace Mnemos
             return false;
         }
 
+        // ResourceManager initialization
+        ResourceManager::Get().SetAssetRoot("../../resources");
+
         // Timer initialization
         mContext.timer = &sTimer;
         FrameTimerInitInfo timerConfig;

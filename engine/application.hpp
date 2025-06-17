@@ -1,5 +1,6 @@
 #pragma once
 
+#include <core/filesystem/resource_manager.hpp>
 #include <core/logging/console_logger.hpp>
 #include <core/time/frame_timer.hpp>
 #include <platform/platform.hpp>

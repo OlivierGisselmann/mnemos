@@ -214,6 +214,13 @@ namespace Mnemos
                 PostQuitMessage(0);
                 mShouldClose = true;
                 return 0;
+            case WM_SIZE:
+            {
+                u32 width = LOWORD(lParam);
+                u32 height = HIWORD(lParam);
+                Resize(width, height);
+                break;
+            }
             case WM_KEYDOWN:
                 mInputSystem->SetKeyDown(TranslateWin32Key(wParam), true);
                 break;

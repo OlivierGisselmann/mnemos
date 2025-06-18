@@ -81,6 +81,8 @@ namespace Mnemos
     {
         ImageData image;
 
+        stbi_set_flip_vertically_on_load(true);
+
         // Load image from file
         int width, height, channels;
         u8* data = stbi_load(fullPath.string().c_str(), &width, &height, &channels, 0);

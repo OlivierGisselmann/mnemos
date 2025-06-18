@@ -2,6 +2,7 @@
 
 #include <core/isubsystem.hpp>
 #include <platform/window/iwindow.hpp>
+#include <core/time/itimer.hpp>
 
 namespace Mnemos
 {
@@ -19,7 +20,7 @@ namespace Mnemos
         void Shutdown() override = 0;
 
         virtual void BeginFrame() = 0;
-        virtual void DrawFrame() = 0;
+        virtual void DrawFrame(f64 deltaTime) = 0;
         virtual void EndFrame() = 0;
 
         virtual ~IRenderer() = default;

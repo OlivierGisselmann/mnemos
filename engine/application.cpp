@@ -33,7 +33,7 @@ namespace Mnemos
 
             // Draw frame
             mContext.renderer->BeginFrame();
-            mContext.renderer->DrawFrame();
+            mContext.renderer->DrawFrame(mContext.timer->GetDeltaTime());
             mContext.renderer->EndFrame();
             OnRender();
 
@@ -66,7 +66,7 @@ namespace Mnemos
         }
 
         // ResourceManager initialization
-        ResourceManager::Get().SetAssetRoot("../../resources");
+        ResourceManager::Get().SetAssetRoot("../../../");
 
         // Timer initialization
         mContext.timer = &sTimer;

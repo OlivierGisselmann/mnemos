@@ -2,88 +2,130 @@
 
 #include <math/vector.hpp>
 
-TEST(Vector2Test, Vector2Addition)
+TEST(VectorTest, VectorConstruction)
 {
-    Mnemos::vec2<float> vec1(3.f, 5.f);
-    Mnemos::vec2<float> vec2(-3.f, 6.f);
+    Mnemos::vec3<f32> v1(1.f, 2.f, 3.f);
+    Mnemos::vec3<f32> v2 = {1.f, 2.f, 3.f};
+    Mnemos::vec3<f32> v3 {1.f, 2.f, 3.f};
 
-    Mnemos::vec2<float> vec3 = vec1 + vec2;
+    Mnemos::vec3<f32> v4(2.f);
+    Mnemos::vec3<f32> v5{2.f};
+    Mnemos::vec3<f32> v6 = {2.f};
 
-    EXPECT_EQ(vec3.x, 0.f);
-    EXPECT_EQ(vec3.y, 11.f);
+    Mnemos::vec3<f32> v7(v1);
+    Mnemos::vec3<f32> v8{v1};
+    Mnemos::vec3<f32> v9 = {v1};
+
+    // 3 value construction
+    EXPECT_EQ(v1.x, 1.0f);
+    EXPECT_EQ(v1.y, 2.0f);
+    EXPECT_EQ(v1.z, 3.0f);
+    EXPECT_EQ(v2.x, 1.0f);
+    EXPECT_EQ(v2.y, 2.0f);
+    EXPECT_EQ(v2.z, 3.0f);
+    EXPECT_EQ(v3.x, 1.0f);
+    EXPECT_EQ(v3.y, 2.0f);
+    EXPECT_EQ(v3.z, 3.0f);
+
+    // 1 value construction
+    EXPECT_EQ(v4.x, 2.0f);
+    EXPECT_EQ(v4.y, 2.0f);
+    EXPECT_EQ(v4.z, 2.0f);
+    EXPECT_EQ(v5.x, 2.0f);
+    EXPECT_EQ(v5.y, 2.0f);
+    EXPECT_EQ(v5.z, 2.0f);
+    EXPECT_EQ(v6.x, 2.0f);
+    EXPECT_EQ(v6.y, 2.0f);
+    EXPECT_EQ(v6.z, 2.0f);
+
+    // Copy construction
+    EXPECT_EQ(v7.x, 1.0f);
+    EXPECT_EQ(v7.y, 2.0f);
+    EXPECT_EQ(v7.z, 3.0f);
+    EXPECT_EQ(v8.x, 1.0f);
+    EXPECT_EQ(v8.y, 2.0f);
+    EXPECT_EQ(v8.z, 3.0f);
+    EXPECT_EQ(v9.x, 1.0f);
+    EXPECT_EQ(v9.y, 2.0f);
+    EXPECT_EQ(v9.z, 3.0f);
 }
 
-TEST(Vector2Test, Vector2Substraction)
+TEST(VectorTest, VectorArithmeticOperations)
 {
-    Mnemos::vec2<float> vec1(7.f, 5.f);
-    Mnemos::vec2<float> vec2(3.f, 6.f);
+    Mnemos::vec3<f32> v(1.f, 2.f, 3.f);
+    Mnemos::vec3<f32> v2(2.f);
 
-    Mnemos::vec2<float> vec3 = vec1 - vec2;
+    // Addition with vector
+    Mnemos::vec3<f32> v3 = v + v2;
+    EXPECT_EQ(v3.x, 3.0f);
+    EXPECT_EQ(v3.y, 4.0f);
+    EXPECT_EQ(v3.z, 5.0f);
 
-    EXPECT_EQ(vec3.x, 4.f);
-    EXPECT_EQ(vec3.y, -1.f);
+    // Substraction with vector
+    Mnemos::vec3<f32> v4 = v - v2;
+    EXPECT_EQ(v4.x, -1.0f);
+    EXPECT_EQ(v4.y, 0.0f);
+    EXPECT_EQ(v4.z, 1.0f);
+
+    // Division with vector
+    Mnemos::vec3<f32> v5 = v / v2;
+    EXPECT_EQ(v5.x, 0.5f);
+    EXPECT_EQ(v5.y, 1.0f);
+    EXPECT_EQ(v5.z, 1.5f);
+
+    // Addition with scalar
+    Mnemos::vec3<f32> v6 = v + 2;
+    EXPECT_EQ(v6.x, 3.0f);
+    EXPECT_EQ(v6.y, 4.0f);
+    EXPECT_EQ(v6.z, 5.0f);
+
+    // Substraction with scalar
+    Mnemos::vec3<f32> v7 = v - 2;
+    EXPECT_EQ(v7.x, -1.0f);
+    EXPECT_EQ(v7.y, 0.0f);
+    EXPECT_EQ(v7.z, 1.0f);
+
+    // Division with scalar
+    Mnemos::vec3<f32> v8 = v / 2;
+    EXPECT_EQ(v8.x, 0.5f);
+    EXPECT_EQ(v8.y, 1.0f);
+    EXPECT_EQ(v8.z, 1.5f);
 }
 
-TEST(Vector2Test, Vector2Length)
+TEST(VectorTest, VectorLength)
 {
-    Mnemos::vec2<float> vec(3.f, 4.5f);
+    Mnemos::vec3<f32> v(2.f);
+    f32 length = Mnemos::Length(v);
 
-    EXPECT_NEAR(vec.Length(), 5.408326f, 0.0001f);
+    EXPECT_NEAR(length, 3.4641016f, 0.0001f);
 }
 
-TEST(Vector2Test, Vector2Dot)
+TEST(VectorTest, VectorNormalize)
 {
-    Mnemos::vec2<float> vecX(3.f, 4.5f);
-    Mnemos::vec2<float> vecY(3.f, 4.5f);
+    Mnemos::vec3<f32> v(2.f);
+    Mnemos::vec3<f32> v2 = Normalize(v);
 
-    EXPECT_FLOAT_EQ(Dot(vecX, vecY), 29.25f);
+    EXPECT_NEAR(v2.x, 0.5773502f, 0.0001f);
+    EXPECT_NEAR(v2.y, 0.5773502f, 0.0001f);
+    EXPECT_NEAR(v2.z, 0.5773502f, 0.0001f);
 }
 
-TEST(Vector3Test, Vector3Addition)
+TEST(VectorTest, VectorDot)
 {
-    Mnemos::vec3<float> vec1(3.f, 5.f, -2.5f);
-    Mnemos::vec3<float> vec2(-3.f, 6.f, 1.5f);
+    Mnemos::vec3<f32> v1(2.f);
+    Mnemos::vec3<f32> v2(4.f);
 
-    Mnemos::vec3<float> vecR = vec1 + vec2;
-
-    EXPECT_EQ(vecR.x, 0.f);
-    EXPECT_EQ(vecR.y, 11.f);
-    EXPECT_EQ(vecR.z, -1.f);
+    f32 dot = Dot(v1, v2);
+    EXPECT_FLOAT_EQ(dot, 24.0f);
 }
 
-TEST(Vector3Test, Vector3Substraction)
+TEST(VectorTest, VectorCross)
 {
-    Mnemos::vec3<float> vec1(3.f, 5.f, -2.5f);
-    Mnemos::vec3<float> vec2(-3.f, 6.f, 1.5f);
+    Mnemos::vec3<f32> v1(1.f, 2.f, 3.f);
+    Mnemos::vec3<f32> v2(3.f, 4.f, 5.f);
 
-    Mnemos::vec3<float> vecR = vec1 - vec2;
-
-    EXPECT_EQ(vecR.x, 6.f);
-    EXPECT_EQ(vecR.y, -1.f);
-    EXPECT_EQ(vecR.z, -4.f);
-}
-
-TEST(Vector3Test, Vector3Length)
-{
-    Mnemos::vec3<float> vec(3.f, 4.5f, -10.0f);
-
-    EXPECT_NEAR(vec.Length(), 11.369f, 0.001f);
-}
-
-TEST(Vector3Test, Vector3Dot)
-{
-    Mnemos::vec3<float> vec1(3.f, 5.f, -2.5f);
-    Mnemos::vec3<float> vec2(-3.f, 6.f, 1.5f);
-
-    EXPECT_FLOAT_EQ(Dot(vec1, vec2), 17.25f);
-}
-
-TEST(Vector3Test, Vector3Cross)
-{
-    Mnemos::vec3<float> vec1(1.f, 2.f, 3.f);
-    Mnemos::vec3<float> vec2(3.f, 4.f, 5.f);
-
-    EXPECT_EQ(Cross(vec1, vec2).x, -2.f);
-    EXPECT_EQ(Cross(vec1, vec2).y, 4.f);
-    EXPECT_EQ(Cross(vec1, vec2).z, -2.f);
+    Mnemos::vec3<f32> cross = Cross(v1, v2);
+    EXPECT_FLOAT_EQ(cross.x, -2.f);
+    EXPECT_FLOAT_EQ(cross.y, 4.f);
+    EXPECT_FLOAT_EQ(cross.z, -2.f);
 }

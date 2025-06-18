@@ -6,82 +6,104 @@
 
 namespace Mnemos
 {
-    // Vector 2
-    template <typename T>
-    struct vec2
-    {
-        T x, y;
-
-        vec2(T _x, T _y) : x(_x), y(_y) {}
-        vec2(const vec2<T>& v) : x(v.x), y(v.y) {}
-
-        inline vec2<T> operator+(const vec2<T>& v)
-        {
-            return {x + v.x, y + v.y};
-        }
-
-        inline vec2<T> operator-(const vec2<T>& v)
-        {
-            return {x - v.x, y - v.y};
-        }
-
-        inline f32 length()
-        {
-            return std::sqrt((x*x) + (y*y));
-        }
-    };
-
-    typedef vec2<i32> vec2i;
-    typedef vec2<f32> vec2f;
-
-    template <typename T>
-    inline f32 dot(const vec2<T>& v1, const vec2<T>& v2)
-    {
-        return (v1.x * v2.x) + (v1.y * v2.y);
-    }
-
-    // Vector3
     template <typename T>
     struct vec3
     {
         T x, y, z;
 
+        // Ctor
         vec3(T _x, T _y, T _z) : x(_x), y(_y), z(_z) {}
-        vec3(const vec3<T>& v) : x(v.x), y(v.y), z(v.z) {}
+        vec3(T value) : x(value), y(value), z(value) {}
+        vec3(const vec3& vec) : x(vec.x), y(vec.y), z(vec.z) {}
 
-        inline vec3<T> operator+(const vec3<T>& v)
+        // Vector operations
+        [[nodiscard]] inline vec3<T> operator+(const vec3<T>& v) const
         {
             return {x + v.x, y + v.y, z + v.z};
         }
 
-        inline vec3<T> operator-(const vec3<T>& v)
+        [[nodiscard]] inline vec3<T> operator-(const vec3<T>& v) const
         {
             return {x - v.x, y - v.y, z - v.z};
         }
 
-        inline f32 length()
+        [[nodiscard]] inline vec3<T> operator/(const vec3<T>& v) const
         {
-            return std::sqrt((x*x) + (y*y) + (z*z));
+            return {x / v.x, y / v.y, z / v.z};
+        }
+
+        [[nodiscard]] inline vec3<T>& operator+=(const vec3<T>& v)
+        {
+            x += v.x;
+            y += v.y;
+            z += v.z;
+            return *this;
+        }
+
+        [[nodiscard]] inline vec3<T>& operator-=(const vec3<T>& v)
+        {
+            x -= v.x;
+            y -= v.y;
+            z -= v.z;
+            return *this;
+        }
+
+        [[nodiscard]] inline vec3<T>& operator/=(const vec3<T>& v)
+        {
+            x /= v.x;
+            y /= v.y;
+            z /= v.z;
+            return *this;
+        }
+
+        // Scalar operations
+        [[nodiscard]] inline vec3<T> operator+(T value) const
+        {
+            return {x + value, y + value, z + value};
+        }
+
+        [[nodiscard]] inline vec3<T> operator-(T value) const
+        {
+            return {x - value, y - value, z - value};
+        }
+
+        [[nodiscard]] inline vec3<T> operator*(T value) const
+        {
+            return {x * value, y * value, z *value};
+        }
+
+        [[nodiscard]] inline vec3<T> operator/(T value) const
+        {
+            return {x / value, y / value, z / value};
         }
     };
 
     template <typename T>
-    inline f32 dot(const vec3<T>& v1, const vec3<T>& v2)
+    [[nodiscard]] inline T Length(const vec3<T>& v)
+    {
+        return std::sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
+    }
+
+    template <typename T>
+    [[nodiscard]] inline vec3<T> Normalize(const vec3<T>& v)
+    {
+        return v / Length(v);
+    }
+
+    template <typename T>
+    [[nodiscard]] inline T Dot(const vec3<T>& v1, const vec3<T>& v2)
     {
         return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
     }
 
     template <typename T>
-    inline vec3<T> cross(const vec3<T>& v1, const vec3<T>& v2)
+    [[nodiscard]] inline vec3<T> Cross(const vec3<T>& v1, const vec3<T>& v2)
     {
         return
         {
-            (v1.y * v2.z) - (v1.z * v2.y),
-            (v1.z * v2.x) - (v1.x * v2.z),
-            (v1.x * v2.y) - (v1.y * v2.x)
+            v1.y * v2.z - v1.z * v2.y,
+            v1.z * v2.x - v1.x * v2.z,
+            v1.x * v2.y - v1.y * v2.x
         };
     }
-
-    typedef vec3<i32> vec3i;
-    typedef vec3<f32> vec3f;
 }

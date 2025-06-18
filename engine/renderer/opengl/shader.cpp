@@ -54,6 +54,18 @@ namespace Mnemos
         glUniform1f(glGetUniformLocation(mID, name.c_str()), value);
     }
 
+    template<>
+    void Shader::SetUniform(const std::string& name, const f32* matrix)
+    {
+        glUniformMatrix4fv(glGetUniformLocation(mID, name.c_str()), 1, GL_FALSE, matrix);
+    }
+
+    template<>
+    void Shader::SetUniform(const std::string& name, f32* matrix)
+    {
+        glUniformMatrix4fv(glGetUniformLocation(mID, name.c_str()), 1, GL_FALSE, matrix);
+    }
+
     void Shader::LoadShader(ShaderType type)
     {
         switch (type)

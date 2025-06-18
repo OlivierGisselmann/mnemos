@@ -1,11 +1,10 @@
 #pragma once
 
 #include <core/filesystem/resource_manager.hpp>
+#include <math/matrix.hpp>
 #include <platform/types.hpp>
 
 #include <glad/glad.h>
-
-#include <iostream>
 
 namespace Mnemos
 {

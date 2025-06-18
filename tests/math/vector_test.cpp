@@ -28,7 +28,7 @@ TEST(Vector2Test, Vector2Length)
 {
     Mnemos::vec2<float> vec(3.f, 4.5f);
 
-    EXPECT_NEAR(vec.length(), 5.408326f, 0.0001f);
+    EXPECT_NEAR(vec.Length(), 5.408326f, 0.0001f);
 }
 
 TEST(Vector2Test, Vector2Dot)
@@ -36,7 +36,7 @@ TEST(Vector2Test, Vector2Dot)
     Mnemos::vec2<float> vecX(3.f, 4.5f);
     Mnemos::vec2<float> vecY(3.f, 4.5f);
 
-    EXPECT_FLOAT_EQ(dot(vecX, vecY), 29.25f);
+    EXPECT_FLOAT_EQ(Dot(vecX, vecY), 29.25f);
 }
 
 TEST(Vector3Test, Vector3Addition)
@@ -67,7 +67,7 @@ TEST(Vector3Test, Vector3Length)
 {
     Mnemos::vec3<float> vec(3.f, 4.5f, -10.0f);
 
-    EXPECT_NEAR(vec.length(), 11.369f, 0.001f);
+    EXPECT_NEAR(vec.Length(), 11.369f, 0.001f);
 }
 
 TEST(Vector3Test, Vector3Dot)
@@ -75,7 +75,7 @@ TEST(Vector3Test, Vector3Dot)
     Mnemos::vec3<float> vec1(3.f, 5.f, -2.5f);
     Mnemos::vec3<float> vec2(-3.f, 6.f, 1.5f);
 
-    EXPECT_FLOAT_EQ(dot(vec1, vec2), 17.25f);
+    EXPECT_FLOAT_EQ(Dot(vec1, vec2), 17.25f);
 }
 
 TEST(Vector3Test, Vector3Cross)
@@ -83,7 +83,7 @@ TEST(Vector3Test, Vector3Cross)
     Mnemos::vec3<float> vec1(1.f, 2.f, 3.f);
     Mnemos::vec3<float> vec2(3.f, 4.f, 5.f);
 
-    EXPECT_EQ(cross(vec1, vec2).x, -2.f);
-    EXPECT_EQ(cross(vec1, vec2).y, 4.f);
-    EXPECT_EQ(cross(vec1, vec2).z, -2.f);
+    EXPECT_EQ(Cross(vec1, vec2).x, -2.f);
+    EXPECT_EQ(Cross(vec1, vec2).y, 4.f);
+    EXPECT_EQ(Cross(vec1, vec2).z, -2.f);
 }

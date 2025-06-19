@@ -15,6 +15,7 @@ namespace Mnemos
         vec3(T _x, T _y, T _z) : x(_x), y(_y), z(_z) {}
         vec3(T value) : x(value), y(value), z(value) {}
         vec3(const vec3& vec) : x(vec.x), y(vec.y), z(vec.z) {}
+        ~vec3() = default;
 
         // Vector operations
         [[nodiscard]] inline vec3<T> operator+(const vec3<T>& v) const
@@ -32,7 +33,7 @@ namespace Mnemos
             return {x / v.x, y / v.y, z / v.z};
         }
 
-        [[nodiscard]] inline vec3<T>& operator+=(const vec3<T>& v)
+        inline vec3<T>& operator+=(const vec3<T>& v)
         {
             x += v.x;
             y += v.y;
@@ -40,7 +41,7 @@ namespace Mnemos
             return *this;
         }
 
-        [[nodiscard]] inline vec3<T>& operator-=(const vec3<T>& v)
+        inline vec3<T>& operator-=(const vec3<T>& v)
         {
             x -= v.x;
             y -= v.y;
@@ -48,7 +49,7 @@ namespace Mnemos
             return *this;
         }
 
-        [[nodiscard]] inline vec3<T>& operator/=(const vec3<T>& v)
+        inline vec3<T>& operator/=(const vec3<T>& v)
         {
             x /= v.x;
             y /= v.y;

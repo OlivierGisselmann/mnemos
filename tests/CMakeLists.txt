@@ -22,8 +22,9 @@ enable_testing()
 
 # Create the executable with selected files
 add_executable(${PROJECT_NAME}
-    core/timer_test.cpp
     core/filesystem_test.cpp
+    core/timer_test.cpp
+    math/matrix_test.cpp
     math/vector_test.cpp
     platform/inputsystem_test.cpp
     platform/types_test.cpp

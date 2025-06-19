@@ -50,7 +50,7 @@ namespace Mnemos
     void FrameTimer::Tick()
     {
         mStart = Clock::now();
-        mDeltaTime = std::chrono::duration<f64, std::milli>(mStart - mLast).count();
+        mTime += mDeltaTime;
     }
 
     void FrameTimer::Sleep()
@@ -98,5 +98,10 @@ namespace Mnemos
     f64 FrameTimer::GetDeltaTime() const
     {
         return mDeltaTime;
+    }
+
+    f64 FrameTimer::GetTime() const
+    {
+        return mTime;
     }
 }

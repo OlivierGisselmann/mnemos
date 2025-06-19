@@ -22,11 +22,13 @@ namespace Mnemos
         void Sleep() override;
 
         f64 GetDeltaTime() const override;
+        f64 GetTime() const override;
 
     private:
         std::chrono::time_point<std::chrono::high_resolution_clock > mStart{};
         std::chrono::time_point<std::chrono::high_resolution_clock > mLast{};
 
+        f64 mTime = 0;
         f64 mDeltaTime = 0;
         f64 mTargetFrameTime = 0;
         bool mLimitFramerate = false;

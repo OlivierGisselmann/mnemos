@@ -16,5 +16,6 @@ namespace Mnemos
         virtual void Tick() = 0;
         virtual void Sleep() = 0;
         virtual f64 GetDeltaTime() const = 0;
+        virtual f64 GetTime() const = 0;
     };
 }

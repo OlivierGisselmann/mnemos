@@ -11,11 +11,32 @@ namespace Mnemos
     {
         switch(sym)
         {
-        case XK_w: return Key::W;
         case XK_a: return Key::A;
-        case XK_s: return Key::S;
+        case XK_b: return Key::B;
+        case XK_c: return Key::C;
         case XK_d: return Key::D;
+        case XK_e: return Key::E;
+        case XK_f: return Key::F;
+        case XK_g: return Key::G;
+        case XK_h: return Key::H;
+        case XK_i: return Key::I;
+        case XK_j: return Key::J;
+        case XK_k: return Key::K;
+        case XK_l: return Key::L;
+        case XK_m: return Key::M;
+        case XK_n: return Key::N;
+        case XK_o: return Key::O;
+        case XK_p: return Key::P;
+        case XK_q: return Key::Q;
         case XK_r: return Key::R;
+        case XK_s: return Key::S;
+        case XK_t: return Key::T;
+        case XK_u: return Key::U;
+        case XK_v: return Key::V;
+        case XK_w: return Key::W;
+        case XK_x: return Key::X;
+        case XK_y: return Key::Y;
+        case XK_z: return Key::Z;
 
         case XK_space: return Key::Space;
         case XK_Escape: return Key::Escape;

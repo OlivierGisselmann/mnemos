@@ -5,14 +5,9 @@ void GameApp::OnStart()
     //Mnemos::Log(Mnemos::TRACE, "Game started");
 }
 
-void GameApp::OnUpdate(float deltaTime)
+void GameApp::OnUpdate(f64 deltaTime)
 {
     //Mnemos::Log(Mnemos::TRACE, "Updating");
-}
-
-void GameApp::OnRender()
-{
-    //Mnemos::Log(Mnemos::TRACE, "Rendering");
 }
 
 void GameApp::OnShutdown()

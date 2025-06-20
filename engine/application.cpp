@@ -35,7 +35,6 @@ namespace Mnemos
             mContext.renderer->BeginFrame();
             mContext.renderer->DrawFrame(mContext.timer->GetDeltaTime());
             mContext.renderer->EndFrame();
-            OnRender();
 
             // Check for close request (input and destroy window)
             if (mContext.window->CloseRequested() || mContext.inputSystem->IsKeyDown(Key::Escape))
@@ -61,9 +60,7 @@ namespace Mnemos
         // Logger initialization
         mContext.logger = &sLogger;
         if(!mContext.logger->Init({}))
-        {
             return false;
-        }
 
         // ResourceManager initialization
         ResourceManager::Get().SetAssetRoot("../../../");

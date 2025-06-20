@@ -28,15 +28,13 @@ namespace Mnemos
 
     protected:
         virtual void OnStart() {}
-        virtual void OnUpdate(float deltaTime) {}
-        virtual void OnRender() {}
+        virtual void OnUpdate(f64 deltaTime) {}
         virtual void OnShutdown() {}
 
     private:
         bool InitSubsystems();
         void ShutdownSubsystems();
 
-    private:
         ApplicationContext mContext;
         bool mRunning {true};
     };

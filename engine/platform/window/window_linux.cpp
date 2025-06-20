@@ -164,6 +164,17 @@ namespace Mnemos
             return false;
         }
 
+        // Get glXSwapIntervalEXT
+        PFNGLXSWAPINTERVALEXTPROC glXSwapIntervalEXT = 
+        (PFNGLXSWAPINTERVALEXTPROC)glXGetProcAddressARB(
+            (const GLubyte*)"glXSwapIntervalEXT");
+
+        if (!glXSwapIntervalEXT)
+        {
+            mLogger->LogError("glXSwapIntervalEXT not supported");
+            return false;
+        }
+
         // Create modern OpenGL context
         int contextAttributes[] = 
         {
@@ -190,6 +201,7 @@ namespace Mnemos
         }
 
         const GLubyte* version = glGetString(GL_VERSION);
+        glXSwapIntervalEXT(mDisplay, mWindow, 0);
 
         mLogger->LogTrace( "X11 Window initialized");
 

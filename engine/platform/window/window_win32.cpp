@@ -109,6 +109,9 @@ namespace Mnemos
         wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)
             wglGetProcAddress("wglChoosePixelFormatARB");
 
+        wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)
+            wglGetProcAddress("wglSwapIntervalEXT");
+
         if (!wglCreateContextAttribsARB)
             return false;
 
@@ -160,6 +163,8 @@ namespace Mnemos
 
         ShowWindow(mHwnd, SW_SHOWDEFAULT);
         UpdateWindow(mHwnd);
+
+        wglSwapIntervalEXT(0);
 
         mLogger->LogTrace("Win32 Window initialization");
 

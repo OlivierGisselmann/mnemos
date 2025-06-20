@@ -114,7 +114,30 @@ namespace Mnemos
         XSetWMProtocols(mDisplay, mWindow, &mDeleteWindow, 1);
 
         // Enable event masks for input
-        XSelectInput(mDisplay, mWindow, KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask | StructureNotifyMask);
+        XSelectInput(mDisplay, mWindow, KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask | StructureNotifyMask);
+
+        // Query XInput support
+        i32 opcode, event, error;
+        if(!XQueryExtension(mDisplay, "XInputExtension", &opcode, &event, &error))
+            return false;
+
+        i32 major = 2, minor = 0;
+        if(XIQueryVersion(mDisplay, &major, &minor) != Success)
+            return false;
+
+        // Enable XInput2 for mouse capture
+        XIEventMask* eventMask = nullptr;
+        u8 mask[3] = {0, 0, 0};
+        if(!eventMask)
+        {
+            eventMask = (XIEventMask*)malloc(sizeof(*eventMask));
+            eventMask->deviceid = XIAllMasterDevices;
+            eventMask->mask_len = sizeof(mask);
+            eventMask->mask = mask;
+        }
+
+        XISetMask(eventMask->mask, XI_RawMotion);
+        XISelectEvents(mDisplay, DefaultRootWindow(mDisplay), eventMask, 1);
 
         // Disable input auto repeat
         XAutoRepeatOff(mDisplay);
@@ -170,6 +193,8 @@ namespace Mnemos
 
         mLogger->LogTrace( "X11 Window initialized");
 
+        free(eventMask);
+
         return true;
     }
 
@@ -197,6 +222,18 @@ namespace Mnemos
             if(mEvent.xclient.data.l[0] == mDeleteWindow)
                 mShouldClose = true;
 
+            // Mouse motion input
+            if(mEvent.xcookie.type == GenericEvent && XGetEventData(mDisplay, &mEvent.xcookie))
+            {
+                if(mEvent.xcookie.evtype == XI_RawMotion)
+                {
+                    XIRawEvent* raw = (XIRawEvent*)mEvent.xcookie.data;
+                    mInputSystem->SetMouseDelta(raw->raw_values[0], raw->raw_values[1]);
+                }
+
+                XFreeEventData(mDisplay, &mEvent.xcookie);
+            }
+
             switch (mEvent.type)
             {
             case DestroyNotify:
@@ -220,9 +257,6 @@ namespace Mnemos
                 mInputSystem->SetKeyDown(TranslateX11Key(sym), false);
                 break;
             }
-            case MotionNotify:
-                mInputSystem->SetMousePosition(mEvent.xmotion.x, mEvent.xmotion.y);
-                break;
             case ButtonPress:
             { 
                 switch (mEvent.xbutton.button)
@@ -247,6 +281,9 @@ namespace Mnemos
 
                 break;
             }
+            default:
+                XFlush(mDisplay);
+                break;
             }
         }
     }

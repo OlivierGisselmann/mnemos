@@ -49,6 +49,12 @@ namespace Mnemos
         mMouseY = y;
     }
 
+    void InputSystem::SetMouseDelta(f32 dx, f32 dy)
+    {
+        mDeltaX = dx;
+        mDeltaY = dy;
+    }
+
     bool InputSystem::IsKeyPressed(Key key) const
     {
         int i = (int)key;
@@ -99,5 +105,15 @@ namespace Mnemos
     i16 InputSystem::GetMouseY() const
     {
         return mMouseY;
+    }
+
+    f32 InputSystem::GetMouseDeltaX() const
+    {
+        return mDeltaX;
+    }
+
+    f32 InputSystem::GetMouseDeltaY() const
+    {
+        return mDeltaY;
     }
 }

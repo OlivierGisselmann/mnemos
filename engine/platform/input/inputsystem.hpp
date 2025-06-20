@@ -38,6 +38,7 @@ namespace Mnemos
         void SetKeyDown(Key keycode, bool down);
         void SetMouseButtonDown(MouseButton button, bool down);
         void SetMousePosition(i16 x, i16 y);
+        void SetMouseDelta(f32 dx, f32 dy);
 
         bool IsKeyPressed(Key key) const;
         bool IsKeyDown(Key key) const;
@@ -50,6 +51,9 @@ namespace Mnemos
         i16 GetMouseX() const;
         i16 GetMouseY() const;
 
+        f32 GetMouseDeltaX() const;
+        f32 GetMouseDeltaY() const;
+
     protected:
         bool mCurrentKeys[(int)Key::Count] = {};
         bool mPreviousKeys[(int)Key::Count] = {};
@@ -59,6 +63,8 @@ namespace Mnemos
 
         i16 mMouseX = 0;
         i16 mMouseY = 0;
+        f32 mDeltaX = 0;
+        f32 mDeltaY = 0;
 
         ILogger* mLogger = nullptr;
     };

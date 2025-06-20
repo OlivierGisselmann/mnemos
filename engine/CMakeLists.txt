@@ -15,6 +15,7 @@ if(UNIX)
     find_package(X11 REQUIRED)
     target_link_libraries(${PROJECT_NAME} PUBLIC
         ${X11_LIBRARIES}
+        X11::Xi
         OpenGL::GL OpenGL::GLX
     )
 elseif(WIN32)

@@ -151,7 +151,7 @@ namespace Mnemos
     template <typename T>
     [[nodiscard]] T Radians(T degrees)
     {
-        return degrees *  ((T)3.14159265 / (T)180);
+        return degrees * ((T)3.14159265 / (T)180);
     }
 
     template <typename T>
@@ -185,7 +185,7 @@ namespace Mnemos
         const T c = std::cos(a);
         const T s = std::sin(a);
 
-        mat4<T> res;
+        mat4<T> res(m);
 
 		vec3<T> axis = Normalize(v);
 
@@ -226,5 +226,38 @@ namespace Mnemos
 		res(3, 2) = - static_cast<T>(1);
 
 		return res;
+    }
+
+    template <typename T>
+    [[nodiscard]] mat4<T> LookAt(const vec3<T>& position, const vec3<T>& target, const vec3<T>& up)
+    {
+        mat4<T> res;
+
+        vec3<T> f = Normalize(position - target);
+        vec3<T> s = Normalize(Cross(f, Normalize(up)));
+        vec3<T> u = Normalize(Cross(s, f));
+
+        vec3<T> t(0.f);
+        t.x = Dot(position, s);
+        t.y = Dot(position, u);
+        t.z = Dot(position, f);
+
+        res(0, 0) = s.x;
+        res(0, 1) = s.y;
+        res(0, 2) = s.z;
+
+        res(1, 0) = u.x;
+        res(1, 1) = u.y;
+        res(1, 2) = u.z;
+
+        res(2, 0) = -f.x;
+        res(2, 1) = -f.y;
+        res(2, 2) = -f.z;
+
+        res(0, 3) = -t.x;
+        res(1, 3) = -t.y;
+        res(2, 3) = -t.z;
+
+        return res;
     }
 }

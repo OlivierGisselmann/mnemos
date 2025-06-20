@@ -1,72 +1,12 @@
 #include <renderer/opengl/glrenderer.hpp>
 
-std::vector<f32> vertices
-{
-    -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-     0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-
-    -0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-
-     0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 1.0f
-};
-
-std::vector<u32> indices {  // note that we start from 0!
-    0,1,3,
-    3,1,2,
-    4,5,7,
-    7,5,6,
-    8,9,11,
-    11,9,10,
-    12,13,15,
-    15,13,14,
-    16,17,19,
-    19,17,18,
-    20,21,23,
-    23,21,22
-};
-
 static f64 sDelta = 0;
 
 namespace Mnemos
 {
-    VertexArray* vao;
     Texture* texture;
     Shader* shader;
+    Mesh* mesh;
 
     bool GLRenderer::Init(const SubsystemInitInfo& info)
     {
@@ -82,9 +22,16 @@ namespace Mnemos
         // Load resources
         shader = new Shader("resources/shaders/shader.vert", "resources/shaders/shader.frag");
 
-        texture = new Texture("resources/textures/checker.png");
+        // Camera
+        mCamera = new Camera(mInput, {0.f, 0.f, -3.f});
+        projection = Perspective(55.0f, ((f32)mWindow->GetWidth() / (f32)mWindow->GetHeight()), 0.1f, 100.0f);
 
-        vao = new VertexArray(indices, vertices);
+        vec3<f32> camPos(0.f, 0.f, -10.f);
+        vec3<f32> camCenter(0.f);
+        vec3<f32> up(0.f, 1.f, 0.f);
+
+        Transform transform({2.f}, {0.f, 0.f, 30.f}, {1.f});
+        mesh = new Mesh(shader, transform);
 
         mLogger->LogTrace("Renderer initialized");
         mLogger->LogTrace((const char*)glGetString(GL_VERSION));
@@ -94,8 +41,10 @@ namespace Mnemos
 
     void GLRenderer::Shutdown()
     {
-        delete vao;
+        delete mesh;
         delete shader;
+        delete texture;
+        delete mCamera;
 
         mLogger->LogTrace("Renderer shutdown");
     }
@@ -105,6 +54,8 @@ namespace Mnemos
         CheckCanvasResize();
 
         ClearScreen();
+
+        mCamera->Update(sDelta);
 
         // Switch geometry display mode on input
         if(mInput->IsKeyPressed(Key::W))
@@ -126,8 +77,12 @@ namespace Mnemos
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         else
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        
-        DrawIndexed(shader, vao);
+
+        shader->Use();
+        shader->SetUniform("view", mCamera->GetViewMatrix().Data());
+        shader->SetUniform("projection", projection.Data());
+
+        mesh->Draw();
     }
 
     void GLRenderer::EndFrame()
@@ -142,30 +97,6 @@ namespace Mnemos
     {
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    }
-
-    void GLRenderer::DrawIndexed(Shader* shader, VertexArray* vao)
-    {
-        shader->Use();
-        vao->Bind();
-        texture->Bind();
-
-        view = Translate(view, {0.f, 0., -3.f});
-
-        projection = Perspective(55.0f, ((f32)mWindow->GetWidth() / (f32)mWindow->GetHeight()), 0.1f, 100.0f);
-        
-        angle += sDelta * 15.0f;
-        model = Rotate(model, angle, {3.f, -1.f, 1.f});
-        model = Translate(model, {0.f, 0.f, 0.f});
-
-        shader->SetUniform("model", model.Data());
-        shader->SetUniform("view", view.Data());
-        shader->SetUniform("projection", projection.Data());
-
-        //glDrawElements(GL_TRIANGLES, vao.GetIndicesSize(), GL_UNSIGNED_INT, 0);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        vao->Unbind();
     }
 
     void GLRenderer::CheckCanvasResize()

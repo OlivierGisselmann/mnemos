@@ -3,6 +3,8 @@
 #include <core/filesystem/resource_manager.hpp>
 #include <math/matrix.hpp>
 #include <renderer/irenderer.hpp>
+#include <renderer/camera.hpp>
+#include <renderer/opengl/mesh.hpp>
 #include <renderer/opengl/shader.hpp>
 #include <renderer/opengl/texture.hpp>
 #include <renderer/opengl/vertex_array.hpp>
@@ -23,7 +25,6 @@ namespace Mnemos
 
     private:
         void ClearScreen();
-        void DrawIndexed(Shader* shader, VertexArray* vao);
 
         void CheckCanvasResize();
 
@@ -37,9 +38,8 @@ namespace Mnemos
         i16 mCanvasCurrentWidth = 0;
         i16 mCanvasCurrentHeight = 0;
 
-        f32 angle = 0;
-        mat4<f32> model;
-        mat4<f32> view;
+        Camera* mCamera;
         mat4<f32> projection;
+        mat4<f32> view;
     };
 }

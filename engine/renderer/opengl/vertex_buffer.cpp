@@ -32,6 +32,9 @@ namespace Mnemos
 
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(f32), (void*)(6 * sizeof(f32)));
         glEnableVertexAttribArray(2);
+
+        // Get vertices count
+        mCount = vertices.size();
     }
 
     void VertexBuffer::Bind() const
@@ -42,5 +45,10 @@ namespace Mnemos
     void VertexBuffer::Unbind() const
     {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    u32 VertexBuffer::GetCount() const
+    {
+        return mCount;
     }
 }

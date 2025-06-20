@@ -30,8 +30,13 @@ namespace Mnemos
         glBindVertexArray(0);
     }
 
-    u32 VertexArray::GetIndicesSize() const
+    u32 VertexArray::GetIndicesCount() const
     {
         return mIndices.GetCount();
+    }
+
+    u32 VertexArray::GetVerticesCount() const
+    {
+        return mVertices.GetCount();
     }
 }

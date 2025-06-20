@@ -17,7 +17,8 @@ namespace Mnemos
         void Bind() const;
         void Unbind() const;
 
-        u32 GetIndicesSize() const;
+        u32 GetIndicesCount() const;
+        u32 GetVerticesCount() const;
 
     private:
         u32 mID;

@@ -14,13 +14,13 @@ namespace Mnemos
         // Ctor
         mat4()
         {
-            memset(m, (T)0, sizeof(m));
+            memset(m, static_cast<T>(0), sizeof(m));
             m[0] = m[5] = m[10] = m[15] = 1.f; // Default to identity
         }
 
         mat4(T diagonal)
         {
-            memset(m, (T)0, sizeof(m));
+            memset(m, static_cast<T>(0), sizeof(m));
             m[0] = m[5] = m[10] = m[15] = diagonal;
         }
 
@@ -92,13 +92,16 @@ namespace Mnemos
 
         [[nodiscard]] inline mat4<T> operator*(const mat4<T>& rhs) const
         {
-            mat4<T> res;
+            mat4<T> res(0.f);
 
             for(i8 row = 0; row < 4; ++row)
             {
                 for(i8 col = 0; col < 4; ++col)
                 {
-                    res(row, col) = (*this)(row, col) * rhs(col, row);
+                    for(i8 k = 0; k < 4; ++k)
+                    {
+                        res(row, col) += (*this)(row, k) * rhs(k, col);
+                    }
                 }
             }
 
@@ -137,7 +140,10 @@ namespace Mnemos
             {
                 for(i8 col = 0; col < 4; ++col)
                 {
-                    (*this)(row, col) *= rhs(col, row);
+                    for(i8 k = 0; k < 4; ++k)
+                    {
+                        (*this)(row, k) *= rhs(k, col);
+                    }
                 }
             }
 
@@ -149,13 +155,13 @@ namespace Mnemos
     };
 
     template <typename T>
-    [[nodiscard]] T Radians(T degrees)
+    [[nodiscard]] inline T Radians(T degrees)
     {
-        return degrees * ((T)3.14159265 / (T)180);
+        return degrees * (static_cast<T>(3.14159265) / static_cast<T>(180));
     }
 
     template <typename T>
-    [[nodiscard]] mat4<T> Translate(const mat4<T>& m, const vec3<T>& t)
+    [[nodiscard]] inline mat4<T> Translate(const mat4<T>& m, const vec3<T>& t)
     {
         mat4<T> res(m);
 
@@ -167,7 +173,7 @@ namespace Mnemos
     }
 
     template <typename T>
-    [[nodiscard]] mat4<T> Scale(const mat4<T>& m, const vec3<T>& s)
+    [[nodiscard]] inline mat4<T> Scale(const mat4<T>& m, const vec3<T>& s)
     {
         mat4<T> res(m);
 
@@ -179,15 +185,15 @@ namespace Mnemos
     }
 
     template <typename T>
-    [[nodiscard]] mat4<T> Rotate(const mat4<T>& m, T angle, const vec3<T>& v)
+    [[nodiscard]] inline mat4<T> Rotate(const mat4<T>& m, T angle, const vec3<T>& v)
     {
         const T a = Radians(angle);
         const T c = std::cos(a);
         const T s = std::sin(a);
 
-        mat4<T> res(m);
-
 		vec3<T> axis = Normalize(v);
+
+        mat4<T> res(m);
 
 		res(0, 0) = c + (static_cast<T>(1) - c)      * axis.x     * axis.x;
 		res(0, 1) = (static_cast<T>(1) - c) * axis.x * axis.y + s * axis.z;
@@ -213,7 +219,58 @@ namespace Mnemos
     }
 
     template <typename T>
-    [[nodiscard]] mat4<T> Perspective(T fov, T aspect, T near, T far)
+    [[nodiscard]] inline mat4<T> RotateX(const mat4<T>& m, T angle)
+    {
+        const T a = Radians(angle);
+        const T c = std::cos(a);
+        const T s = std::sin(a);
+
+        mat4<T> res;
+
+        res(1, 1) = c;
+        res(1, 2) = -s;
+        res(2, 1) = s;
+        res(2, 2) = c;
+
+        return res;
+    }
+
+    template <typename T>
+    [[nodiscard]] inline mat4<T> RotateY(const mat4<T>& m, T angle)
+    {
+        const T a = Radians(angle);
+        const T c = std::cos(a);
+        const T s = std::sin(a);
+
+        mat4<T> res;
+
+        res(0, 0) = c;
+        res(0, 2) = s;
+        res(2, 0) = -s;
+        res(2, 2) = c;
+
+        return res;
+    }
+
+    template <typename T>
+    [[nodiscard]] inline mat4<T> RotateZ(const mat4<T>& m, T angle)
+    {
+        const T a = Radians(angle);
+        const T c = std::cos(a);
+        const T s = std::sin(a);
+
+        mat4<T> res;
+
+        res(0, 0) = c;
+        res(0, 1) = -s;
+        res(1, 0) = s;
+        res(1, 1) = c;
+        
+        return res;
+    }
+
+    template <typename T>
+    [[nodiscard]] inline mat4<T> Perspective(T fov, T aspect, T near, T far)
     {
         const T range = std::tan(Radians(fov) / static_cast<T>(2));
 
@@ -229,7 +286,7 @@ namespace Mnemos
     }
 
     template <typename T>
-    [[nodiscard]] mat4<T> LookAt(const vec3<T>& position, const vec3<T>& target, const vec3<T>& up)
+    [[nodiscard]] inline mat4<T> LookAt(const vec3<T>& position, const vec3<T>& target, const vec3<T>& up)
     {
         mat4<T> res;
 

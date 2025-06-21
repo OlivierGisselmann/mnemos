@@ -67,11 +67,11 @@ namespace Mnemos
     {
         LoadData(vertices, indices);
 
-        mModel = Scale(mModel, mTransform.scale);
-        //mModel = Rotate(mModel, mTransform.rotation.x, {1.f, 0.f, 0.f});
-        //mModel = Rotate(mModel, mTransform.rotation.y, {0.f, 1.f, 0.f});
-        //mModel = Rotate(mModel, mTransform.rotation.z, {0.f, 0.f, 1.f});
-        mModel = Translate(mModel, mTransform.position);
+        mModel = Translate(mModel, mTransform.position)
+            * RotateY(mModel, mTransform.rotation.y)
+            * RotateX(mModel, mTransform.rotation.x)
+            * RotateZ(mModel, mTransform.rotation.z)
+            * Scale(mModel, mTransform.scale);
     }
 
     Mesh::~Mesh() {}

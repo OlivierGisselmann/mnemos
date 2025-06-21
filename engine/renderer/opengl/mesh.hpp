@@ -28,7 +28,6 @@ namespace Mnemos
         VertexArray* mVertexArray = nullptr;
         Texture* mTexture = nullptr;
 
-
         Transform mTransform;
         mat4<f32> mModel;
     };

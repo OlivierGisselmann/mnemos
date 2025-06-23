@@ -40,6 +40,5 @@ namespace Mnemos
 
         Camera* mCamera;
         mat4<f32> projection;
-        mat4<f32> view;
     };
 }

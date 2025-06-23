@@ -26,12 +26,7 @@ namespace Mnemos
         mCamera = new Camera(mInput, {0.f, 0.f, -3.f});
         projection = Perspective(55.0f, ((f32)mWindow->GetWidth() / (f32)mWindow->GetHeight()), 0.1f, 100.0f);
 
-        vec3<f32> camPos(0.f, 0.f, -10.f);
-        vec3<f32> camCenter(0.f);
-        vec3<f32> up(0.f, 1.f, 0.f);
-
-        Transform transform({2.f}, {0.f, 0.f, 30.f}, {1.f});
-        mesh = new Mesh(shader, transform);
+        mesh = new Mesh(shader, {{0.f}, {0.f, 0.f, 0.f}, {1.f}});
 
         mLogger->LogTrace("Renderer initialized");
         mLogger->LogTrace((const char*)glGetString(GL_VERSION));
@@ -55,8 +50,6 @@ namespace Mnemos
 
         ClearScreen();
 
-        mCamera->Update(sDelta);
-
         // Switch geometry display mode on input
         if(mInput->IsKeyPressed(Key::W))
             mPolygonMode = !mPolygonMode;
@@ -66,6 +59,8 @@ namespace Mnemos
             shader->Reload();
             mLogger->LogTrace("Shaders reloaded");
         }
+
+        mCamera->Update(sDelta);
     }
 
     void GLRenderer::DrawFrame(f64 deltaTime)

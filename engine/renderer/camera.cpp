@@ -4,17 +4,19 @@
 
 namespace Mnemos
 {
+    static vec3<f32> movement(0.f);
+
     Camera::Camera(InputSystem* input, const vec3<f32>& position)
     : mPosition(position), mFront({0.f, 0.f, -1.f}), mUp({0.f, 1.f, 0.f}), mWorldUp(mUp), mRight({0.f}), mInput(input)
     {
-        mYaw = 90.f;
+        mYaw = -90.f;
         mPitch = 0.f;
 
-        mSpeed = 2.5f;
-        mMouseSensitivity = 0.1f;
+        mSpeed = 5.f;
+        mMouseSensitivity = .15f;
         mZoom = 45.0f;
 
-        mFirstMouse = true;
+        UpdateVectors();
     }
 
     Camera::~Camera(){}
@@ -26,9 +28,8 @@ namespace Mnemos
 
     void Camera::Update(f32 delta)
     {
-        //ProcessMouse(delta);
+        ProcessMouse(delta);
         ProcessInput(delta);
-
         UpdateVectors();
     }
 
@@ -37,26 +38,35 @@ namespace Mnemos
         f32 velocity = mSpeed * delta;
 
         if(mInput->IsKeyDown(Key::Z))
-            mPosition += mFront * velocity;
-        if(mInput->IsKeyDown(Key::S))
             mPosition -= mFront * velocity;
+        if(mInput->IsKeyDown(Key::S))
+            mPosition += mFront * velocity;
         if(mInput->IsKeyDown(Key::Q))
             mPosition -= mRight * velocity;
         if(mInput->IsKeyDown(Key::D))
             mPosition += mRight * velocity;
         if(mInput->IsKeyDown(Key::A))
-            mPosition -= mUp * velocity;
-        if(mInput->IsKeyDown(Key::E))
             mPosition += mUp * velocity;
+        if(mInput->IsKeyDown(Key::E))
+            mPosition -= mUp * velocity;
     }
 
     void Camera::ProcessMouse(f32 delta)
     {
-        mXOffset = mInput->GetMouseDeltaX() * mMouseSensitivity;
-        mYOffset = mInput->GetMouseDeltaY() * mMouseSensitivity;
+        f32 xPos = mInput->GetMouseX();
+        f32 yPos = mInput->GetMouseY();
 
-        mYaw += mXOffset;
-        mPitch += mYOffset;
+        mXOffset = (xPos - mLastX) * mMouseSensitivity;
+        mYOffset = (yPos - mLastY) * mMouseSensitivity;
+        mLastX = xPos;
+        mLastY = yPos;
+
+        // Only rotate camera if RMB is down
+        if(mInput->IsMouseButtonDown(MouseButton::Right))
+        {
+            mYaw += mXOffset;
+            mPitch -= mYOffset;
+        }
 
         // Constrain axis
         if(mPitch > 89.f)

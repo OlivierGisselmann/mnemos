@@ -22,12 +22,12 @@ namespace Mnemos
     void InputSystem::Update()
     {
         // Swap key state from current to previous each frame
-        for(int i = 0; i < (int)Key::Count; ++i)
+        for(int i = 0; i < static_cast<int>(Key::Count); ++i)
         {
             mPreviousKeys[i] = mCurrentKeys[i];           
         }
 
-        for(int i = 0; i < (int)MouseButton::Count; ++i)
+        for(int i = 0; i < static_cast<int>(MouseButton::Count); ++i)
         {
             mPreviousMouse[i] = mCurrentMouse[i];
         }

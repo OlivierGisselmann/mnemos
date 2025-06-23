@@ -1,7 +1,5 @@
 #include <core/time/frame_timer.hpp>
 
-#include <thread>
-
 #include <platform/platform.hpp>
 #if defined(MNEMOS_PLATFORM_WIN32)
 
@@ -26,12 +24,15 @@ namespace Mnemos
 
         // Get init info
         const auto* timerInfo = dynamic_cast<const FrameTimerInitInfo*>(&info);
-        mTargetFrameTime = 1.0 / timerInfo->targetFramerate;
+        mFpsLimit =  timerInfo->targetFramerate;
         mLimitFramerate = timerInfo->limitFramerate;
         mLogger = timerInfo->logger;
 
         // Initialize first time point
-        mLast = Clock::now();
+
+        mStart = Clock::now();
+        mCurrent = GetTime();
+        mLast = 0.0;
 
         mLogger->LogTrace("Frame Timer initialized");
 
@@ -47,61 +48,26 @@ namespace Mnemos
         mLogger->LogTrace("Frame Timer shutdown");
     }
 
-    void FrameTimer::Tick()
+    bool FrameTimer::Tick()
     {
-        mStart = Clock::now();
-        mTime += mDeltaTime;
-    }
+        mCurrent = GetTime();
 
-    void FrameTimer::Sleep()
-    {
-        // Get actual frame duration from start of loop to end
-        auto frameEnd = Clock::now();
-        f64 frameDuration = std::chrono::duration<f64>(frameEnd - mStart).count();
-
-        if(mLimitFramerate)
+        if((mCurrent - mLast) > GetDeltaTime())
         {
-            // If sleep time is positive, then frame was too fast and need to sleep
-            f64 remaining = mTargetFrameTime - frameDuration;
-
-            if(remaining > 0)
-            {
-                // If the remaining time is less than a millisecond, sleeping will cost too much time, spinlock instead
-                const f64 spinThreshold = 0.001; // 1 ms
-
-                // If enough time to sleep
-                if(remaining > spinThreshold)
-                {
-                    f64 sleepTime = remaining - spinThreshold;
-                    std::this_thread::sleep_for(std::chrono::duration<f64>(sleepTime));
-                }
-
-                // Spin lock for the remaining time
-                while(true)
-                {
-                    auto now = Clock::now();
-                    f64 totalFrame = std::chrono::duration<f64>(now - mStart).count();
-
-                    if(totalFrame >= mTargetFrameTime)
-                        break;
-                }
-
-                frameEnd = Clock::now();
-                frameDuration = std::chrono::duration<f64>(frameEnd - mStart).count();
-            }
+            mLast = mCurrent;
+            return true;
         }
-
-        mDeltaTime = frameDuration;
-        mLast = frameEnd;
+        
+        return false;
     }
 
     f64 FrameTimer::GetDeltaTime() const
     {
-        return mDeltaTime;
+        return 1.0 / mFpsLimit;
     }
 
     f64 FrameTimer::GetTime() const
     {
-        return mTime;
+        return std::chrono::duration<f64>(Clock::now() - mStart).count();
     }
 }

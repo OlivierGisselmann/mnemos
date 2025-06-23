@@ -25,16 +25,20 @@ namespace Mnemos
 
         while(mRunning)
         {
-            mContext.timer->Tick();
-            mContext.inputSystem->Update();
             mContext.window->PollEvents();
 
-            Update();
+            if(mContext.timer->Tick())
+            {
+                Draw();
+                Update();
+            }
 
-            Draw();
-
-            // Limit framerate if enabled
-            mContext.timer->Sleep();
+            // Check for close request (input and destroy window)
+            if (mContext.window->CloseRequested() || mContext.inputSystem->IsKeyDown(Key::Escape))
+            {
+                mContext.logger->LogTrace("Close requested");
+                mRunning = false;
+            }
         }
 
         OnShutdown();
@@ -55,8 +59,8 @@ namespace Mnemos
         // Timer initialization
         mContext.timer = &sTimer;
         FrameTimerInitInfo timerConfig;
-        timerConfig.targetFramerate = 60;
-        timerConfig.limitFramerate = false;
+        timerConfig.targetFramerate = 120;
+        timerConfig.limitFramerate = true;
         timerConfig.logger = mContext.logger;
         if(!mContext.timer->Init(timerConfig))
         {
@@ -115,16 +119,9 @@ namespace Mnemos
 
     void Application::Update()
     {
-
         OnUpdate(mContext.timer->GetDeltaTime());
-
-        // Check for close request (input and destroy window)
-        if (mContext.window->CloseRequested() || mContext.inputSystem->IsKeyDown(Key::Escape))
-        {
-            mContext.logger->LogTrace("Close requested");
-            mRunning = false;
-        }
-}
+        mContext.inputSystem->Update();
+    }
 
     void Application::Draw()
     {

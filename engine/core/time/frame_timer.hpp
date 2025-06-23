@@ -18,19 +18,19 @@ namespace Mnemos
         bool Init(const SubsystemInitInfo& info) override;
         void Shutdown() override;
 
-        void Tick() override;
-        void Sleep() override;
+        bool Tick() override;
 
         f64 GetDeltaTime() const override;
         f64 GetTime() const override;
 
     private:
         std::chrono::time_point<std::chrono::high_resolution_clock > mStart{};
-        std::chrono::time_point<std::chrono::high_resolution_clock > mLast{};
+        f64 mCurrent = 0.0;
+        f64 mLast = 0.0;
 
-        f64 mTime = 0;
-        f64 mDeltaTime = 0;
-        f64 mTargetFrameTime = 0;
+        f64 mTime = 0.0;
+        f64 mDeltaTime = 0.0;
+        i16 mFpsLimit = 0;
         bool mLimitFramerate = false;
 
         ILogger* mLogger = nullptr;

@@ -13,8 +13,7 @@ namespace Mnemos
         bool Init(const SubsystemInitInfo& info) override = 0;
         void Shutdown() override = 0;
 
-        virtual void Tick() = 0;
-        virtual void Sleep() = 0;
+        virtual bool Tick() = 0;
         virtual f64 GetDeltaTime() const = 0;
         virtual f64 GetTime() const = 0;
     };

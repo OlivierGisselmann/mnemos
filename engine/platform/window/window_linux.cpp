@@ -114,7 +114,7 @@ namespace Mnemos
         XSetWMProtocols(mDisplay, mWindow, &mDeleteWindow, 1);
 
         // Enable event masks for input
-        XSelectInput(mDisplay, mWindow, KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask | StructureNotifyMask);
+        XSelectInput(mDisplay, mWindow, KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask | StructureNotifyMask | PointerMotionMask);
 
         // Query XInput support
         i32 opcode, event, error;
@@ -201,7 +201,12 @@ namespace Mnemos
         }
 
         const GLubyte* version = glGetString(GL_VERSION);
+
+        // Disable VSync
         glXSwapIntervalEXT(mDisplay, mWindow, 0);
+
+        // Center cursor on start
+        XWarpPointer(mDisplay, None, mWindow, 0, 0, 0, 0, mWidth / 2, mHeight / 2);
 
         mLogger->LogTrace( "X11 Window initialized");
 
@@ -291,6 +296,11 @@ namespace Mnemos
                 default: break;
                 }
 
+                break;
+            }
+            case MotionNotify:
+            {
+                mInputSystem->SetMousePosition(mEvent.xmotion.x, mEvent.xmotion.y);
                 break;
             }
             default:

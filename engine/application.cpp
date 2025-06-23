@@ -26,25 +26,12 @@ namespace Mnemos
         while(mRunning)
         {
             mContext.timer->Tick();
-
-            // Update engine state
-            mContext.window->PollEvents();
-            OnUpdate(mContext.timer->GetDeltaTime());
-
-            // Draw frame
-            mContext.renderer->BeginFrame();
-            mContext.renderer->DrawFrame(mContext.timer->GetDeltaTime());
-            mContext.renderer->EndFrame();
-
-            // Check for close request (input and destroy window)
-            if (mContext.window->CloseRequested() || mContext.inputSystem->IsKeyDown(Key::Escape))
-            {
-                mContext.logger->LogTrace("Close requested");
-                mRunning = false;
-            }
-
-            // Update input states
             mContext.inputSystem->Update();
+            mContext.window->PollEvents();
+
+            Update();
+
+            Draw();
 
             // Limit framerate if enabled
             mContext.timer->Sleep();
@@ -69,7 +56,7 @@ namespace Mnemos
         mContext.timer = &sTimer;
         FrameTimerInitInfo timerConfig;
         timerConfig.targetFramerate = 60;
-        timerConfig.limitFramerate = true;
+        timerConfig.limitFramerate = false;
         timerConfig.logger = mContext.logger;
         if(!mContext.timer->Init(timerConfig))
         {
@@ -124,5 +111,25 @@ namespace Mnemos
         mContext.inputSystem->Shutdown();
         mContext.timer->Shutdown();
         mContext.logger->Shutdown();
+    }
+
+    void Application::Update()
+    {
+
+        OnUpdate(mContext.timer->GetDeltaTime());
+
+        // Check for close request (input and destroy window)
+        if (mContext.window->CloseRequested() || mContext.inputSystem->IsKeyDown(Key::Escape))
+        {
+            mContext.logger->LogTrace("Close requested");
+            mRunning = false;
+        }
+}
+
+    void Application::Draw()
+    {
+        mContext.renderer->BeginFrame();
+        mContext.renderer->DrawFrame(mContext.timer->GetDeltaTime());
+        mContext.renderer->EndFrame();
     }
 }

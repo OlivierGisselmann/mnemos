@@ -34,6 +34,8 @@ namespace Mnemos
     private:
         bool InitSubsystems();
         void ShutdownSubsystems();
+        void Update();
+        void Draw();
 
         ApplicationContext mContext;
         bool mRunning {true};

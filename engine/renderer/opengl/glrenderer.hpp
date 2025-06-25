@@ -3,6 +3,7 @@
 #include <core/filesystem/resource_manager.hpp>
 #include <math/matrix.hpp>
 #include <renderer/irenderer.hpp>
+#include <renderer/opengl/debug_output.hpp>
 #include <renderer/camera.hpp>
 #include <renderer/opengl/mesh.hpp>
 #include <renderer/opengl/shader.hpp>

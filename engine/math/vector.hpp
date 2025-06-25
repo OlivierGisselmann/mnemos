@@ -7,6 +7,17 @@
 namespace Mnemos
 {
     template <typename T>
+    struct vec2
+    {
+        T x, y;
+
+        vec2(T _x, T _y) : x(_x), y(_y) {}
+        vec2(T value) : x(value), y(value) {}
+        vec2(const vec2& vec) : x(vec.x), y(vec.y) {}
+        ~vec2() = default;
+    };
+
+    template <typename T>
     struct vec3
     {
         T x, y, z;

@@ -10,6 +10,8 @@ find_package(OpenGL REQUIRED)
 # Create static library with sources
 add_library(${PROJECT_NAME} STATIC ${ENGINE_SOURCES} ${ENGINE_SOURCES_C})
 
+set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/engine$<0:>)
+
 if(UNIX)
     # Link XLib to the library
     find_package(X11 REQUIRED)

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/isubsystem.hpp>
-#include <core/logging/ilogger.hpp>
+#include <core/logging/logger_manager.hpp>
 #include <platform/input/inputsystem.hpp>
 #include <platform/types.hpp>
 
@@ -13,7 +13,6 @@ namespace Mnemos
         i16 height = 0;
         const char* title = nullptr;
         bool fullscreen = false;
-        ILogger* logger = nullptr;
         InputSystem* inputSystem;
     };
 

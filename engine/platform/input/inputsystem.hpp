@@ -1,17 +1,12 @@
 #pragma once
 
 #include <core/isubsystem.hpp>
-#include <core/logging/ilogger.hpp>
+#include <core/logging/logger_manager.hpp>
 #include <platform/input/keycodes.hpp>
 #include <platform/types.hpp>
 
 namespace Mnemos
 {
-    struct InputSystemInitInfo : public SubsystemInitInfo
-    {
-        ILogger* logger = nullptr;
-    };
-
     class InputSystem : public ISubsystem
     {
     public:
@@ -49,7 +44,5 @@ namespace Mnemos
         i16 mMouseY = 0;
         f32 mDeltaX = 0;
         f32 mDeltaY = 0;
-
-        ILogger* mLogger = nullptr;
     };
 }

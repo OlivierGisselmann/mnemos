@@ -5,7 +5,7 @@ namespace Mnemos
     bool LoggerManager::Init(const SubsystemInitInfo& info)
     {
         Get().SetLogLevel(LogLevel::DEBUG);
-        Get().EnableFileOutput("game.log");
+        //Get().EnableFileOutput("game.log");
 
         return true;
     }

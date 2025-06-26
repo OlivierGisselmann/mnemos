@@ -31,7 +31,6 @@ namespace Mnemos
 
         IWindow* mWindow = nullptr;
         InputSystem* mInput = nullptr;
-        ILogger* mLogger = nullptr;
 
         bool mPolygonMode = false;
         

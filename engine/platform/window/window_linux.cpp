@@ -51,7 +51,6 @@ namespace Mnemos
         const auto* windowConfig = dynamic_cast<const WindowInitInfo*>(&info);
         mWidth = windowConfig->width;
         mHeight = windowConfig->height;
-        mLogger = windowConfig->logger;
         mInputSystem = windowConfig->inputSystem;
 
         // Get XLib display
@@ -160,7 +159,7 @@ namespace Mnemos
 
         if(!glXCreateContextAttribsARB)
         {
-            mLogger->LogError("glXCreateCOntextAttribsARB not supported");
+            LOG(LogLevel::ERR, "glXCreateCOntextAttribsARB not supported");
             return false;
         }
 
@@ -171,7 +170,7 @@ namespace Mnemos
 
         if (!glXSwapIntervalEXT)
         {
-            mLogger->LogError("glXSwapIntervalEXT not supported");
+            LOG(LogLevel::ERR, "glXSwapIntervalEXT not supported");
             return false;
         }
 
@@ -196,7 +195,7 @@ namespace Mnemos
         // Load GL Functions with GLAD
         if (!gladLoadGLLoader((GLADloadproc)glXGetProcAddress))
         {
-            mLogger->LogError("Failed to load OpenGL functions");
+            LOG(LogLevel::ERR, "Failed to load OpenGL functions");
             return false;
         }
 
@@ -208,7 +207,7 @@ namespace Mnemos
         // Center cursor on start
         XWarpPointer(mDisplay, None, mWindow, 0, 0, 0, 0, mWidth / 2, mHeight / 2);
 
-        mLogger->LogTrace( "X11 Window initialized");
+        LOG(LogLevel::INFO, "X11 Window initialized");
 
         free(eventMask);
 
@@ -217,7 +216,7 @@ namespace Mnemos
 
     void LinuxWindow::Shutdown()
     {
-        mLogger->LogTrace("X11 Window shutdown");
+        LOG(LogLevel::INFO, "X11 Window shutdown");
 
         // Destroy OpenGL context
         glXMakeCurrent(mDisplay, None, nullptr);

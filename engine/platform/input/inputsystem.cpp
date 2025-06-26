@@ -6,17 +6,14 @@ namespace Mnemos
 {
     bool InputSystem::Init(const SubsystemInitInfo& info)
     {
-        const auto* inputConfig = dynamic_cast<const InputSystemInitInfo*>(&info);
-        mLogger = inputConfig->logger;
-
-        mLogger->LogTrace("Input System initialized");
+        LOG(LogLevel::INFO, "Input System initialized");
 
         return true;
     }
 
     void InputSystem::Shutdown()
     {
-        mLogger->LogTrace("Input System shutdown");
+        LOG(LogLevel::INFO, "Input System shutdown");
     }
 
     void InputSystem::Update()

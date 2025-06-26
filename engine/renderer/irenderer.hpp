@@ -10,7 +10,6 @@ namespace Mnemos
     {
         IWindow* window = nullptr;
         InputSystem* input = nullptr;
-        ILogger* logger = nullptr;
     };
 
     class IRenderer : ISubsystem

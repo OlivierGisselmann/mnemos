@@ -1,6 +1,12 @@
 #include <application.hpp>
+#include <core/assert.hpp>
 
 // Global Static Instances
+static Mnemos::LoggerManager sLoggerManager;
+static Mnemos::ITimer* sTimer = new Mnemos::FrameTimer();
+static Mnemos::IRenderer* sRenderer = new Mnemos::GLRenderer();
+static Mnemos::InputSystem sInputSystem;
+
 #if defined(MNEMOS_PLATFORM_LINUX)
     #include <platform/window/window_linux.hpp>
     static Mnemos::LinuxWindow sWindow;
@@ -8,11 +14,6 @@
     #include <platform/window/window_win32.hpp>
     static Mnemos::Win32Window sWindow;
 #endif
-
-static Mnemos::ConsoleLogger sLogger;
-static Mnemos::FrameTimer sTimer;
-static Mnemos::GLRenderer sRenderer;
-static Mnemos::InputSystem sInputSystem;
 
 namespace Mnemos
 {
@@ -36,7 +37,7 @@ namespace Mnemos
             // Check for close request (input and destroy window)
             if (mContext.window->CloseRequested() || mContext.inputSystem->IsKeyDown(Key::Escape))
             {
-                mContext.logger->LogTrace("Close requested");
+                LOG(LogLevel::INFO, "Close requested");
                 mRunning = false;
             }
         }
@@ -49,32 +50,29 @@ namespace Mnemos
     bool Application::InitSubsystems()
     {
         // Logger initialization
-        mContext.logger = &sLogger;
-        if(!mContext.logger->Init({}))
+        mContext.loggerManager = &sLoggerManager;
+        if(!mContext.loggerManager->Init({}))
             return false;
 
         // ResourceManager initialization
         ResourceManager::Get().SetAssetRoot("../../../");
 
         // Timer initialization
-        mContext.timer = &sTimer;
+        mContext.timer = sTimer;
         FrameTimerInitInfo timerConfig;
         timerConfig.targetFramerate = 120;
         timerConfig.limitFramerate = true;
-        timerConfig.logger = mContext.logger;
         if(!mContext.timer->Init(timerConfig))
         {
-            mContext.logger->LogFatal("Failed to initialize timer");
+            LOG(LogLevel::FATAL, "Failed to initialize timer");
             return false;
         }
 
         // Input System initialization
         mContext.inputSystem = &sInputSystem;
-        InputSystemInitInfo inputConfig;
-        inputConfig.logger = mContext.logger;
-        if(!mContext.inputSystem->Init(inputConfig))
+        if(!mContext.inputSystem->Init({}))
         {
-            mContext.logger->LogFatal("Failed to initialize input system");
+            LOG(LogLevel::FATAL, "Failed to initialize input system");
             return false;
         }
 
@@ -85,23 +83,21 @@ namespace Mnemos
         windowConfig.height = 720;
         windowConfig.title = "eskesamarch?";
         windowConfig.fullscreen = false;
-        windowConfig.logger = mContext.logger;
         windowConfig.inputSystem = mContext.inputSystem;
         if(!mContext.window->Init(windowConfig))
         {
-            mContext.logger->LogFatal("Failed to initialize window");
+            LOG(LogLevel::FATAL, "Failed to initialize window");
             return false;
         }
 
         // Renderer initialization
-        mContext.renderer = &sRenderer;
+        mContext.renderer = sRenderer;
         RendererInitInfo rendererConfig;
         rendererConfig.window = mContext.window;
         rendererConfig.input = mContext.inputSystem;
-        rendererConfig.logger = mContext.logger;
         if(!mContext.renderer->Init(rendererConfig))
         {
-            mContext.logger->LogFatal("Failed to initialize renderer");
+            LOG(LogLevel::FATAL, "Failed to initialize renderer");
             return false;
         }
 
@@ -114,7 +110,7 @@ namespace Mnemos
         mContext.window->Shutdown();
         mContext.inputSystem->Shutdown();
         mContext.timer->Shutdown();
-        mContext.logger->Shutdown();
+        mContext.loggerManager->Shutdown();
     }
 
     void Application::Update()

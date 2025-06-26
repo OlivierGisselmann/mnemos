@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/time/itimer.hpp>
-#include <core/logging/ilogger.hpp>
+#include <core/logging/logger_manager.hpp>
 
 namespace Mnemos
 {
@@ -9,7 +9,6 @@ namespace Mnemos
     {
         i16 targetFramerate = 0;
         bool limitFramerate = false;
-        ILogger* logger = nullptr;
     };
 
     class FrameTimer : public ITimer
@@ -32,7 +31,5 @@ namespace Mnemos
         f64 mDeltaTime = 0.0;
         i16 mFpsLimit = 0;
         bool mLimitFramerate = false;
-
-        ILogger* mLogger = nullptr;
     };
 }

@@ -26,7 +26,6 @@ namespace Mnemos
         const auto* timerInfo = dynamic_cast<const FrameTimerInitInfo*>(&info);
         mFpsLimit =  timerInfo->targetFramerate;
         mLimitFramerate = timerInfo->limitFramerate;
-        mLogger = timerInfo->logger;
 
         // Initialize first time point
 
@@ -34,7 +33,7 @@ namespace Mnemos
         mCurrent = GetTime();
         mLast = 0.0;
 
-        mLogger->LogTrace("Frame Timer initialized");
+        LOG(LogLevel::INFO, "Frame Timer initialized");
 
         return true;
     }
@@ -45,7 +44,7 @@ namespace Mnemos
             timeEndPeriod(1);
         #endif
 
-        mLogger->LogTrace("Frame Timer shutdown");
+        LOG(LogLevel::INFO, "Frame Timer shutdown");
     }
 
     bool FrameTimer::Tick()

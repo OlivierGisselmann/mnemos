@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/filesystem/resource_manager.hpp>
-#include <core/logging/console_logger.hpp>
+#include <core/logging/logger_manager.hpp>
 #include <core/time/frame_timer.hpp>
 #include <platform/platform.hpp>
 #include <platform/input/inputsystem.hpp>
@@ -12,7 +12,7 @@ namespace Mnemos
 {
     struct ApplicationContext
     {
-        ILogger* logger = nullptr;
+        LoggerManager* loggerManager;
         InputSystem* inputSystem;
         IWindow* window = nullptr;
         ITimer* timer = nullptr;

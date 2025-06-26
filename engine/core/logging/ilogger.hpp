@@ -6,18 +6,23 @@
 
 namespace Mnemos
 {
-    class ILogger : public ISubsystem
+    enum class LogLevel
+    {
+        DEBUG,
+        INFO,
+        WARN,
+        ERR,
+        FATAL
+    };
+
+    class ILogger
     {
     public:
-        bool Init(const SubsystemInitInfo& info) override = 0;
-        void Shutdown() override = 0;
-
-        virtual void LogTrace(const std::string& message) = 0;
-        virtual void LogDebug(const std::string& message) = 0;
-        virtual void LogWarn(const std::string& message) = 0;
-        virtual void LogError(const std::string& message) = 0;
-        virtual void LogFatal(const std::string& message) = 0;
-
         virtual ~ILogger() = default;
+
+        virtual void SetLogLevel(LogLevel level) = 0;
+        virtual void EnableFileOutput(const std::string& filename) = 0;
+
+        virtual void Log(LogLevel level, const std::string& message, const char* file, int line, const char* function) = 0;
     };
 }

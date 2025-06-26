@@ -1,5 +1,7 @@
 #pragma once
 
+#ifndef NDEBUG
+
 #define ASSERT(expr)                                                \
     do {                                                            \
         if (!(expr)) {                                              \
@@ -9,4 +11,10 @@
                       << ", line " << __LINE__ << "." << std::endl; \
             std::abort();                                           \
         }                                                           \
-    } while (0)
+    } while (0)                                                     \
+
+#else
+
+#define ASSERT(expr)
+
+#endif

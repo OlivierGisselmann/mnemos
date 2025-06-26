@@ -53,7 +53,6 @@ namespace Mnemos
         const auto* windowConfig = dynamic_cast<const WindowInitInfo*>(&info);
         mWidth = windowConfig->width;
         mHeight = windowConfig->height;
-        mLogger = windowConfig->logger;
         mInputSystem = windowConfig->inputSystem;
         
         mHInstance = GetModuleHandle(0);
@@ -158,7 +157,7 @@ namespace Mnemos
         // Load GL functions with GLAD
         if (!gladLoadGL())
         {
-            mLogger->LogError("Failed to load OpenGL functions");
+            LOG(LogLevel::INFO, "Failed to load OpenGL functions");
             return false;
         }
 
@@ -167,20 +166,20 @@ namespace Mnemos
 
         wglSwapIntervalEXT(0);
 
-        mLogger->LogTrace("Win32 Window initialization");
+        LOG(LogLevel::INFO, "Win32 Window initialization");
 
         return true;
     }
 
     void Win32Window::Shutdown()
     {
-        mLogger->LogTrace("Win32 Window shutdown");
+        LOG(LogLevel::INFO, "Win32 Window shutdown");
 
         wglMakeCurrent(mHDC, nullptr);
         wglDeleteContext(mGLContext);
         ReleaseDC(mHwnd, mHDC);
         DestroyWindow(mHwnd);
-        UnregisterClass("MainWindowClass", GetModuleHandle(nullptr));
+        UnregisterClassA(mWndClass.lpszClassName, GetModuleHandle(nullptr));
 
         mHwnd = nullptr;
     }
@@ -234,8 +233,7 @@ namespace Mnemos
         switch (uMsg)
         {
             case WM_CLOSE:
-                if (MessageBox(hwnd, "Quit application?", "Mnemos Engine", MB_OKCANCEL) == IDOK)
-                    DestroyWindow(hwnd);
+                DestroyWindow(hwnd);
                 break;
             case WM_DESTROY:
                 PostQuitMessage(0);

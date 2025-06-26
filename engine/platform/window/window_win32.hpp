@@ -3,6 +3,7 @@
 #include <platform/platform.hpp>
 #if defined(MNEMOS_PLATFORM_WIN32)
 
+#include <core/logging/logger_manager.hpp>
 #include <platform/window/iwindow.hpp>
 #include <platform/types.hpp>
 
@@ -41,7 +42,6 @@ namespace Mnemos
         MSG mMsg;
 
         bool mShouldClose = false;
-        ILogger* mLogger = nullptr;
     };
 }
 

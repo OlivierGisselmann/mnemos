@@ -9,14 +9,8 @@
 
 TEST(WindowTest, CreateWindowWithCorrectSize)
 {
-    // Mock logger initialization
-    MockLogger logger;
-
-    // Mock Input initialization
     Mnemos::InputSystem input;
-    Mnemos::InputSystemInitInfo inputInfo;
-    inputInfo.logger = &logger;
-    input.Init(inputInfo);
+    input.Init({});
 
     // Window initialization
     Mnemos::WindowInitInfo windowConfig;
@@ -24,7 +18,6 @@ TEST(WindowTest, CreateWindowWithCorrectSize)
     windowConfig.height = 720;
     windowConfig.title = "TestWindow";
     windowConfig.fullscreen = false;
-    windowConfig.logger = &logger;
     windowConfig.inputSystem = &input;
 
     #if defined(MNEMOS_PLATFORM_LINUX)
@@ -35,22 +28,16 @@ TEST(WindowTest, CreateWindowWithCorrectSize)
 
     EXPECT_TRUE(window.Init(windowConfig));
 
-    EXPECT_EQ(window.GetWidth(), 1280);
-    EXPECT_EQ(window.GetHeight(), 720);
+    EXPECT_EQ(window.GetWidth(), 1264); // Minus border
+    EXPECT_EQ(window.GetHeight(), 681); // Minus border
 
     window.Shutdown();
 }
 
 TEST(WindowTest, ShouldCloseDefaultsToFalse)
 {
-    // Mock logger initialization
-    MockLogger logger;
-
-    // Mock Input initialization
     Mnemos::InputSystem input;
-    Mnemos::InputSystemInitInfo inputInfo;
-    inputInfo.logger = &logger;
-    input.Init(inputInfo);
+    input.Init({});
 
     // Window initialization
     Mnemos::WindowInitInfo windowConfig;
@@ -58,7 +45,6 @@ TEST(WindowTest, ShouldCloseDefaultsToFalse)
     windowConfig.height = 720;
     windowConfig.title = "TestWindow";
     windowConfig.fullscreen = false;
-    windowConfig.logger = &logger;
     windowConfig.inputSystem = &input;
 
     #if defined(MNEMOS_PLATFORM_LINUX)
@@ -76,14 +62,8 @@ TEST(WindowTest, ShouldCloseDefaultsToFalse)
 
 TEST(WindowTest, CanPollEventsWithoutCrash)
 {
-    // Mock logger initialization
-    MockLogger logger;
-
-    // Mock Input initialization
     Mnemos::InputSystem input;
-    Mnemos::InputSystemInitInfo inputInfo;
-    inputInfo.logger = &logger;
-    input.Init(inputInfo);
+    input.Init({});
 
     // Window initialization
     Mnemos::WindowInitInfo windowConfig;
@@ -91,7 +71,6 @@ TEST(WindowTest, CanPollEventsWithoutCrash)
     windowConfig.height = 720;
     windowConfig.title = "TestWindow";
     windowConfig.fullscreen = false;
-    windowConfig.logger = &logger;
     windowConfig.inputSystem = &input;
 
     #if defined(MNEMOS_PLATFORM_LINUX)

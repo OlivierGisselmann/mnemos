@@ -7,13 +7,8 @@ namespace Mnemos
 {
     TEST(InputSystemTest, InitialStateIsEmpty)
     {
-        MockLogger logger;
-
         InputSystem input;
-        InputSystemInitInfo inputInfo;
-        inputInfo.logger = &logger;
-
-        input.Init(inputInfo);
+        input.Init({});
 
         for (int i = 0; i < (int)Key::Count; ++i)
         {
@@ -25,13 +20,8 @@ namespace Mnemos
 
     TEST(InputSystemTest, KeyDownUpdatesState)
     {
-        MockLogger logger;
-
         InputSystem input;
-        InputSystemInitInfo inputInfo;
-        inputInfo.logger = &logger;
-
-        input.Init(inputInfo);
+        input.Init({});
 
         input.SetKeyDown(Key::A, true);
 
@@ -42,13 +32,8 @@ namespace Mnemos
 
     TEST(InputSystemTest, KeyUpUpdatesState)
     {
-        MockLogger logger;
-
         InputSystem input;
-        InputSystemInitInfo inputInfo;
-        inputInfo.logger = &logger;
-
-        input.Init(inputInfo);
+        input.Init({});
 
         input.SetKeyDown(Key::A, true);
         input.Update();
@@ -61,13 +46,8 @@ namespace Mnemos
 
     TEST(InputSystemTest, MultipleKeysTrackedIndependently)
     {
-        MockLogger logger;
-
         InputSystem input;
-        InputSystemInitInfo inputInfo;
-        inputInfo.logger = &logger;
-
-        input.Init(inputInfo);
+        input.Init({});
 
         input.SetKeyDown(Key::A, true);
         input.SetKeyDown(Key::S, true);
@@ -85,13 +65,8 @@ namespace Mnemos
 
     TEST(InputSystemTest, MouseButtonStates)
     {
-        MockLogger logger;
-
         InputSystem input;
-        InputSystemInitInfo inputInfo;
-        inputInfo.logger = &logger;
-
-        input.Init(inputInfo);
+        input.Init({});
 
         input.SetMouseButtonDown(MouseButton::Left, true);
 
@@ -107,13 +82,8 @@ namespace Mnemos
 
     TEST(InputSystemTest, MousePositionTracking)
     {
-        MockLogger logger;
-
         InputSystem input;
-        InputSystemInitInfo inputInfo;
-        inputInfo.logger = &logger;
-
-        input.Init(inputInfo);
+        input.Init({});
 
         input.SetMousePosition(100, 200);
         EXPECT_EQ(input.GetMouseX(), 100);

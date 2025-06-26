@@ -1,97 +1,39 @@
 #include <renderer/opengl/mesh.hpp>
 
-static const std::vector<f32> vertices
-{
-    -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-     0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-
-    -0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-
-     0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 1.0f
-};
-
-static const std::vector<u32> indices
-{
-    0,1,3,
-    3,1,2,
-    4,5,7,
-    7,5,6,
-    8,9,11,
-    11,9,10,
-    12,13,15,
-    15,13,14,
-    16,17,19,
-    19,17,18,
-    20,21,23,
-    23,21,22
-};
-
 namespace Mnemos
 {
-    Mesh::Mesh(Shader* shader, Transform transform) : mShader(shader), mTransform(transform)
+    Mesh::Mesh(const void* vertices, u32 vertexSize, u32 vertexCount, const u32* indices, u32 indexCount)
+    : vbo(vertices, vertexSize * vertexCount), ebo(indices, indexCount)
     {
-        LoadData(vertices, indices);
+        vao.Bind();
+        vbo.Bind();
+        ebo.Bind();
 
-        mModel = Translate(mModel, mTransform.position)
-            * RotateY(mModel, mTransform.rotation.y)
-            * RotateX(mModel, mTransform.rotation.x)
-            * RotateZ(mModel, mTransform.rotation.z)
-            * Scale(mModel, mTransform.scale);
+        // Enable vertex attributes
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(f32)));
+        glEnableVertexAttribArray(1);
+
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(6 * sizeof(f32)));
+        glEnableVertexAttribArray(2);
+
+        vao.Unbind();
     }
 
-    Mesh::~Mesh() {}
-
-    void Mesh::LoadData(const std::vector<f32>& vertices, const std::vector<u32>& indices)
+    void Mesh::Bind() const
     {
-        mVertexArray = new VertexArray(indices, vertices);
-        mTexture = new Texture("resources/textures/checker.png");
+        vao.Bind();
     }
 
-    void Mesh::Draw()
+    void Mesh::Unbind() const
     {
-        mShader->Use();
-        mVertexArray->Bind();
-        mTexture->Bind();
+        vao.Unbind();
+    }
 
-        mShader->SetUniform("model", mModel.Data());
-
-        glDrawArrays(GL_TRIANGLES, 0, mVertexArray->GetVerticesCount());
-
-        mVertexArray->Unbind();
+    u32 Mesh::GetIndexCount() const
+    {
+        return ebo.GetCount();
     }
 }

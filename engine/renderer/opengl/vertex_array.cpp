@@ -1,18 +1,10 @@
 #include <renderer/opengl/vertex_array.hpp>
 
-#include <iostream>
-
 namespace Mnemos
 {
-    u32 vbo, ebo;
-
-    VertexArray::VertexArray(const std::vector<u32>& indices, const std::vector<f32>& vertices)
+    VertexArray::VertexArray()
     {
         glGenVertexArrays(1, &mID);
-        glBindVertexArray(mID);
-
-        mIndices.LoadData(indices);
-        mVertices.LoadData(vertices);
     }
 
     VertexArray::~VertexArray()
@@ -28,15 +20,5 @@ namespace Mnemos
     void VertexArray::Unbind() const
     {
         glBindVertexArray(0);
-    }
-
-    u32 VertexArray::GetIndicesCount() const
-    {
-        return mIndices.GetCount();
-    }
-
-    u32 VertexArray::GetVerticesCount() const
-    {
-        return mVertices.GetCount();
     }
 }

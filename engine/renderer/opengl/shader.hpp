@@ -21,7 +21,7 @@ namespace Mnemos
         Shader(const std::string vertexShaderPath, const std::string fragmentShaderPath);
         ~Shader();
 
-        void Use();
+        void Bind() const;
         void Reload();
 
         template<typename T>

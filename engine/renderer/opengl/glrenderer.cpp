@@ -1,13 +1,10 @@
 #include <renderer/opengl/glrenderer.hpp>
 
-#include <core/parsers/obj_parser.hpp>
-
 static f64 sDelta = 0;
 
 namespace Mnemos
 {
-    Shader* shader;
-    Mesh mesh;
+    Renderable* cube = nullptr;
 
     bool GLRenderer::Init(const SubsystemInitInfo& info)
     {
@@ -16,8 +13,6 @@ namespace Mnemos
         mInput = rendererConfig->input;
         mWindow = rendererConfig->window;
 
-        LoadOBJ("resources/models/cube.obj");
-
         // Enable debug output
         glEnable(GL_DEBUG_OUTPUT);
         glDebugMessageCallback(MessageCallback, 0);
@@ -25,25 +20,12 @@ namespace Mnemos
         // Setup OpenGL properties
         glEnable(GL_DEPTH_TEST);
 
-        // Load resources
-        shader = new Shader("resources/shaders/shader.vert", "resources/shaders/shader.frag");
-
         // Camera
         mCamera = new Camera(mInput, {0.f, 0.f, -3.f});
         projection = Perspective(55.0f, ((f32)mWindow->GetWidth() / (f32)mWindow->GetHeight()), 0.1f, 100.0f);
 
-        // Mesh & material
-        Phong phong = {{0.f, 0.f, 1.f}, {0.f, 1.f, 0.f}, 128.f};
-        PhongMaterial mat(*shader, phong);
-        Transform t = {{0.f}, {0.f}, {1.f}};
-        mesh = LoadOBJ("resources/models/cube.obj");
-        mesh.SetTransform(t);
-        mesh.SetMaterial(&mat);
-
-        // Lighting
-        vec3<f32> lightPosition {0.f, 2.f, 0.f};
-        shader->Use();
-        shader->SetUniform("lightPos", lightPosition);
+        // Model
+        cube = AssetLoader::LoadOBJ("resources/models/cube.obj");
 
         LOG(LogLevel::INFO, "Renderer initialized");
         LOG(LogLevel::INFO, (const char*)glGetString(GL_VERSION));
@@ -53,9 +35,8 @@ namespace Mnemos
 
     void GLRenderer::Shutdown()
     {
-        //delete mesh;
-        delete shader;
         delete mCamera;
+        delete cube;
 
         LOG(LogLevel::INFO, "Renderer shutdown");
     }
@@ -70,11 +51,11 @@ namespace Mnemos
         if(mInput->IsKeyPressed(Key::W))
             mPolygonMode = !mPolygonMode;
 
-        if(mInput->IsKeyPressed(Key::R))
-        {
-            shader->Reload();
-            LOG(LogLevel::INFO, "Shaders reloaded");
-        }
+        //if(mInput->IsKeyPressed(Key::R))
+        //{
+        //    shader->Reload();
+        //    LOG(LogLevel::INFO, "Shaders reloaded");
+        //}
 
         mCamera->Update(sDelta);
     }
@@ -89,11 +70,7 @@ namespace Mnemos
         else
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-        shader->Use();
-        shader->SetUniform("view", mCamera->GetViewMatrix().Data());
-        shader->SetUniform("projection", projection.Data());
-
-        //mesh->Draw();
+        Submit(*cube);
     }
 
     void GLRenderer::EndFrame()
@@ -121,5 +98,17 @@ namespace Mnemos
             glViewport(0, 0, mWindow->GetWidth(), mWindow->GetHeight());
             mResizeViewport = false;
         }
+    }
+
+    void GLRenderer::Submit(const Renderable& renderable)
+    {
+        renderable.material->Bind();
+        renderable.material->shader->SetUniform("view", mCamera->GetViewMatrix().Data());
+        renderable.material->shader->SetUniform("projection", projection.Data());
+        renderable.material->shader->SetUniform("model", renderable.transform.Data());
+
+        renderable.mesh->Bind();
+        glDrawElements(GL_TRIANGLES, renderable.mesh->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
+        renderable.mesh->Unbind();
     }
 }

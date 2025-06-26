@@ -1,14 +1,11 @@
 #pragma once
 
-#include <core/filesystem/resource_manager.hpp>
+#include <core/parsers/asset_loader.hpp>
 #include <math/matrix.hpp>
 #include <renderer/irenderer.hpp>
 #include <renderer/opengl/debug_output.hpp>
 #include <renderer/camera.hpp>
-#include <renderer/opengl/mesh.hpp>
-#include <renderer/opengl/shader.hpp>
-#include <renderer/opengl/texture.hpp>
-#include <renderer/opengl/vertex_array.hpp>
+#include <renderer/renderable.hpp>
 
 #include <glad/glad.h>
 
@@ -23,6 +20,8 @@ namespace Mnemos
         void BeginFrame() override;
         void DrawFrame(f64 deltaTime) override;
         void EndFrame() override;
+
+        void Submit(const Renderable& renderable) override;
 
     private:
         void ClearScreen();

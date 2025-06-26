@@ -10,10 +10,8 @@ namespace Mnemos
     class IndexBuffer
     {
     public:
-        IndexBuffer();
+        IndexBuffer(const u32* data, u32 count);
         ~IndexBuffer();
-
-        void LoadData(const std::vector<u32>& indices);
 
         void Bind() const;
         void Unbind() const;

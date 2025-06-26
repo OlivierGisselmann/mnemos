@@ -37,7 +37,7 @@ namespace Mnemos
         Create();
     }
 
-    void Shader::Use()
+    void Shader::Bind() const
     {
         glUseProgram(mID);
     }
@@ -52,6 +52,12 @@ namespace Mnemos
     void Shader::SetUniform(const std::string& name, f32 value)
     {
         glUniform1f(glGetUniformLocation(mID, name.c_str()), value);
+    }
+
+    template<>
+    void Shader::SetUniform(const std::string& name, vec3<f32> vec)
+    {
+        glUniform3f(glGetUniformLocation(mID, name.c_str()), vec.x, vec.y, vec.z);
     }
 
     template<>

@@ -6,6 +6,8 @@
 
 namespace Mnemos
 {
+    struct Renderable; // Forward declaration
+
     struct RendererInitInfo : public SubsystemInitInfo
     {
         IWindow* window = nullptr;
@@ -21,6 +23,8 @@ namespace Mnemos
         virtual void BeginFrame() = 0;
         virtual void DrawFrame(f64 deltaTime) = 0;
         virtual void EndFrame() = 0;
+        
+        virtual void Submit(const Renderable& renderable) = 0;
 
         virtual ~IRenderer() = default;
     };

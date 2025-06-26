@@ -2,28 +2,18 @@
 
 namespace Mnemos
 {
-    IndexBuffer::IndexBuffer()
+    IndexBuffer::IndexBuffer(const u32* data, u32 count) : mCount(count)
     {
-        
+        glGenBuffers(1, &mID);
+
+        Bind();
+
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mCount * sizeof(u32), data, GL_STATIC_DRAW);
     }
 
     IndexBuffer::~IndexBuffer()
     {
         glDeleteBuffers(1, &mID);
-    }
-
-    void IndexBuffer::LoadData(const std::vector<u32>& indices)
-    {
-        mCount = indices.size();
-        
-        // Create GPU Buffer
-        glGenBuffers(1, &mID);
-
-        // Bind buffer
-        Bind();
-
-        // Load indices into buffer
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(u32), indices.data(), GL_STATIC_DRAW);
     }
 
     void IndexBuffer::Bind() const

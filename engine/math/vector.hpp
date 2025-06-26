@@ -11,6 +11,7 @@ namespace Mnemos
     {
         T x, y;
 
+        vec2() : x(static_cast<T>(0)), y(static_cast<T>(0)) {}
         vec2(T _x, T _y) : x(_x), y(_y) {}
         vec2(T value) : x(value), y(value) {}
         vec2(const vec2& vec) : x(vec.x), y(vec.y) {}
@@ -23,6 +24,7 @@ namespace Mnemos
         T x, y, z;
 
         // Ctor
+        vec3() : x(static_cast<T>(0)), y(static_cast<T>(0)), z(static_cast<T>(0)) {}
         vec3(T _x, T _y, T _z) : x(_x), y(_y), z(_z) {}
         vec3(T value) : x(value), y(value), z(value) {}
         vec3(const vec3& vec) : x(vec.x), y(vec.y), z(vec.z) {}

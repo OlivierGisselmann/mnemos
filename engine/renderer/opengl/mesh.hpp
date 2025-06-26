@@ -1,34 +1,23 @@
 #pragma once
 
 #include <math/matrix.hpp>
-#include <renderer/opengl/shader.hpp>
-#include <renderer/opengl/texture.hpp>
+#include <renderer/vertex.hpp>
 #include <renderer/opengl/vertex_array.hpp>
+#include <renderer/opengl/vertex_buffer.hpp>
+#include <renderer/opengl/index_buffer.hpp>
 
 namespace Mnemos
 {
-    struct Transform
+    struct Mesh
     {
-        vec3<f32> position;
-        vec3<f32> rotation;
-        vec3<f32> scale;
-    };
+        VertexArray vao;
+        VertexBuffer vbo;
+        IndexBuffer ebo;
 
-    class Mesh
-    {
-    public:
-        Mesh(Shader* shader, Transform transform);
-        ~Mesh();
+        Mesh(const void* vertices, u32 vertexSize, u32 vertexCount, const u32* indices, u32 indexCount);
 
-        void Draw();
-        void LoadData(const std::vector<f32>& vertices, const std::vector<u32>& indices);
-
-    private:
-        Shader* mShader = nullptr;
-        VertexArray* mVertexArray = nullptr;
-        Texture* mTexture = nullptr;
-
-        Transform mTransform;
-        mat4<f32> mModel;
+        void Bind() const;
+        void Unbind() const;
+        u32 GetIndexCount() const;
     };
 }

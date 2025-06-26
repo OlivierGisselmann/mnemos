@@ -136,18 +136,20 @@ namespace Mnemos
 
         inline mat4<T>& operator*=(const mat4<T>& rhs)
         {
+            mat4<T> res(0.f);
+
             for(i8 row = 0; row < 4; ++row)
             {
                 for(i8 col = 0; col < 4; ++col)
                 {
                     for(i8 k = 0; k < 4; ++k)
                     {
-                        (*this)(row, k) *= rhs(k, col);
+                        res(row, col) += (*this)(row, k) * rhs(k, col);
                     }
                 }
             }
 
-            return (*this);
+            return *this = res;
         }
 
     private:

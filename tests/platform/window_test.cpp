@@ -28,8 +28,15 @@ TEST(WindowTest, CreateWindowWithCorrectSize)
 
     EXPECT_TRUE(window.Init(windowConfig));
 
-    EXPECT_EQ(window.GetWidth(), 1264); // Minus border
-    EXPECT_EQ(window.GetHeight(), 681); // Minus border
+    #if defined(MNEMOS_PLATFORM_LINUX)
+        EXPECT_EQ(window.GetWidth(), 1280); // Minus border
+        EXPECT_EQ(window.GetHeight(), 720); // Minus border
+    #elif defined(MNEMOS_PLATFORM_WIN32)
+        EXPECT_EQ(window.GetWidth(), 1264); // Minus border
+        EXPECT_EQ(window.GetHeight(), 681); // Minus border
+    #endif
+
+    
 
     window.Shutdown();
 }

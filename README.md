@@ -3,6 +3,8 @@ A lightweight, cross-platform 3D game engine written in C++, built from the grou
 
 Built from scratch for education, experimentation and portfolio showcase purposes.
 
+![Teapot screenshot](resources/screenshots/main.png "Phong Teapot")
+
 ---
 
 ## Goals

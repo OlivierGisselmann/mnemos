@@ -34,25 +34,25 @@ namespace Mnemos
             std::string type;
             lineStream >> type;
 
-            if(type == "v")
+            if(type == "v") // Position
             {
                 vec3<f32> pos;
                 lineStream >> pos.x >> pos.y >> pos.z;
                 positions.push_back(pos);
             }
-            else if(type == "vt")
+            else if(type == "vt") // UVs
             {
                 vec2<f32> uv;
                 lineStream >> uv.x >> uv.y;
                 uvs.push_back(uv);
             }
-            else if(type == "vn")
+            else if(type == "vn") // Normals
             {
                 vec3<f32> nml;
                 lineStream >> nml.x >> nml.y >> nml.z;
                 normals.push_back(nml);
             }
-            else if(type == "f")
+            else if(type == "f") // Indices
             {
                 for(int i = 0; i < 3; ++i)
                 {
@@ -81,7 +81,7 @@ namespace Mnemos
                         normIndex = tokens.size() > 2 && !tokens[2].empty() && !normals.empty() ? std::stoi(tokens[2]) - 1 : -1;
                     }
 
-
+                    // Fill vertex struct with data
                     Vertex v;
                     v.position = positions[posIndex];
                     if(normIndex != -1)

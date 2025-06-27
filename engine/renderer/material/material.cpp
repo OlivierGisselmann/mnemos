@@ -9,7 +9,7 @@ namespace Mnemos
         if(diffuse)
         {
             diffuse->Bind();
-            shader->SetUniform("diffuse", 0);
+            shader->SetUniform("diffuseTexture", 0);
         }
 
         shader->SetUniform("albedo", albedo);

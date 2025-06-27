@@ -11,5 +11,5 @@ out vec4 fColor;
 
 void main()
 {
-    fColor = texture(diffuse, fTexCoord) * vec4(1.f);
+    fColor = vec4(fNormal, 1.f);
 }

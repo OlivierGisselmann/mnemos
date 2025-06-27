@@ -69,8 +69,18 @@ namespace Mnemos
                     // Parse faces and check for normals and UVs existence
                     auto tokens = Split(vert, '/');
                     int posIndex = std::stoi(tokens[0]) - 1;
-                    int uvIndex  = tokens.size() > 1 && !tokens[1].empty() && !uvs.empty() ? std::stoi(tokens[1]) - 1 : -1;
-                    int normIndex = tokens.size() > 2 && !tokens[2].empty() && !normals.empty() ? std::stoi(tokens[2]) - 1 : -1;
+                    int normIndex = -1;
+                    int uvIndex = -1;
+
+                    // If no uvs specified, normals are at array[1] position
+                    if(uvs.empty())
+                        normIndex = tokens.size() > 1 && !tokens[1].empty() && !normals.empty() ? std::stoi(tokens[1]) - 1 : -1;
+                    else
+                    {
+                        uvIndex  = tokens.size() > 1 && !tokens[1].empty() && !uvs.empty() ? std::stoi(tokens[1]) - 1 : -1;
+                        normIndex = tokens.size() > 2 && !tokens[2].empty() && !normals.empty() ? std::stoi(tokens[2]) - 1 : -1;
+                    }
+
 
                     Vertex v;
                     v.position = positions[posIndex];

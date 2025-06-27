@@ -21,13 +21,10 @@ namespace Mnemos
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 
-    Texture::~Texture()
-    {
-
-    }
+    Texture::~Texture() {}
 
     void Texture::Bind() const
     {
-        glBindTexture(GL_TEXTURE_2D, GL_TEXTURE0 + mID);
+        glBindTexture(GL_TEXTURE_2D, mID);
     }
 }

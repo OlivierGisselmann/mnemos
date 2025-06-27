@@ -66,7 +66,7 @@ namespace Mnemos
         std::ifstream file(fullPath);
         if(!file.is_open())
         {
-            std::cerr << "Couldn't find '" << fullPath << "'\n";
+            LOGF(LogLevel::ERR) << "Couldn't find file: '" << fullPath;
             return "";
         }
 
@@ -87,7 +87,7 @@ namespace Mnemos
         int width, height, channels;
         u8* data = stbi_load(fullPath.string().c_str(), &width, &height, &channels, 0);
         if (!data) {
-            std::cerr << "Failed to load image: '" << fullPath << "'\n";
+            LOGF(LogLevel::ERR) << "Couldn't find image: '" << fullPath;
             return image;
         }
 

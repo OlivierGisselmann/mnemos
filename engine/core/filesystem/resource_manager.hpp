@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include <core/logging/logger_manager.hpp>
 #include <platform/types.hpp>
 
 namespace fs = std::filesystem;

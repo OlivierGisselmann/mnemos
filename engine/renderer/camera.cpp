@@ -12,7 +12,7 @@ namespace Mnemos
         mYaw = -90.f;
         mPitch = 0.f;
 
-        mSpeed = 5.f;
+        mSpeed = 2.f;
         mMouseSensitivity = .15f;
         mZoom = 45.0f;
 
@@ -24,6 +24,11 @@ namespace Mnemos
     const mat4<f32>& Camera::GetViewMatrix() const
     {
         return mViewMatrix;
+    }
+
+    const vec3<f32>& Camera::GetPosition() const
+    {
+        return mPosition;
     }
 
     void Camera::Update(f32 delta)

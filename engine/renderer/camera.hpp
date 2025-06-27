@@ -12,6 +12,7 @@ namespace Mnemos
         ~Camera();
 
         const mat4<f32>& GetViewMatrix() const;
+        const vec3<f32>& GetPosition() const;
 
         void Update(f32 delta);
 
